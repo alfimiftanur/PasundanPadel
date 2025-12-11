@@ -1,59 +1,141 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Pasundan Padel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Pasundan Padel adalah platform pemesanan lapangan padel berbasis web yang dibuat menggunakan Laravel dan Blade. Website ini mempermudah pengguna dalam melihat jadwal lapangan, melakukan booking, dan mengelola reservasi, serta menyediakan dashboard admin untuk pengelolaan data, gambar, dan laporan booking dalam bentuk PDF.
 
-## About Laravel
+Proyek ini dikembangkan sebagai tugas besar pengembangan web dengan fokus pada implementasi CRUD, relasi database, autentikasi, manajemen gambar, integrasi API, serta pembuatan laporan.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# 📖 Asal Usul Projek
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Padel adalah olahraga yang mulai populer di berbagai kota besar di Indonesia, termasuk wilayah Bandung. Melihat meningkatnya minat masyarakat namun minimnya sistem pemesanan digital yang terstruktur, lahirlah Pasundan Padel, sistem booking lapangan padel yang sederhana, modern, dan mudah digunakan.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Nama "Pasundan Padel" dipilih sebagai representasi identitas lokal Sunda dan semangat membangun layanan olahraga yang profesional di wilayah tersebut.
 
-## Learning Laravel
+# ✨ Fitur Utama
+## 🔵 Frontend
+- Landing page informatif dan responsive
+- List lapangan + detail fasilitas
+- Pencarian & filtering jadwal
+- Form booking
+- Integrasi API Publik
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 🔴 Backend
+- Dashboard Admin untuk mengelola:
+    - Data lapangan (courts)
+    - Jadwal (schedules)
+    - Booking
+    - Upload & delete gambar
+- CRUD lengkap
+- Validasi form
+- Live search & filtering data
+- Generate PDF laporan booking bulanan
+## 🟢 Authentication
+- Login
+- Register
+- Logout
+## 🟡 Database 
+- User (1 → many) Bookings
+- Court (1 → many) Schedules
+- Schedule (1 → many) Bookings
+ ## 🧩 API Publik
+ - ### soon
+# 🏗️ Tech Stack
+## Backend
+- Laravel 10
+- PHP 8.x
+- MySQL / MariaDB
+## Frontend
+- Blade Templates
+- TailwindCSS
+- Other Tools
+- DOMPDF / Laravel Snappy (PDF)
+- API
+- Laravel File Storage
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Cara Instalasi di Local Machine
+## Ikuti langkah-langkah berikut untuk menjalankan Pasundan Padel di komputer lokal.
 
-## Laravel Sponsors
+## 1️⃣ Clone Repository
+```
+git clone https://github.com/username/pasundan-padel.git
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 2️⃣ Install Dependencies Laravel
+```
+composer install
+npm install
+npm run dev
+```
 
-### Premium Partners
+## 3️⃣ Copy .env File
+```
+cp .env.example .env
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 4️⃣ Generate Application Key
+```
+php artisan key:generate
+```
 
-## Contributing
+## 5️⃣ Setup Database
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Buat database baru, misalnya: pasundan_padel
 
-## Code of Conduct
+Update .env:
+```
+DB_DATABASE=pasundan_padel
+DB_USERNAME=root
+DB_PASSWORD= 
+```
+## 6️⃣ Running Migration & Seeder
+```
+ php artisan migrate --seed 
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 7️⃣ Run Local Server
+```
+php artisan serve
+```
+Akses aplikasi:
+```
+http://127.0.0.1:8000
+```
+atau
+```
+http://localhost:8000
+```
 
-## Security Vulnerabilities
+## 🔐 Akun Default (Seeder)
+Admin:
+```
+email: soon
+password: soon
+```
+User:
+```
+email: soon
+password: soon
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📄 Generate PDF Laporan
+Admin dapat mengunduh laporan booking dalam bentuk PDF:
+```
+/admin/bookings/report
+```
 
-## License
+## 🌤️ Integrasi API Publik
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Gunakan API (soon)
+
+Tambahkan API key di .env:
+```
+API_KEY=your_api_key
+```
+
+## 👨‍💻 Kontributor
+| Role | Member | 
+| :--- | :--- |
+|Project Manager | Alfi Mifta Nurhakim |
+|Frontend Developer	|Trimeldawani|
+|Frontend Developer	|Rd. Fillery Riantanu Busthomi|
+|Backend Developer	|Muhamad Rizky|
+|Backend Developer	|Asep Saepul Milah|
