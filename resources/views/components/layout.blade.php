@@ -91,7 +91,7 @@
                 </button>
             </p>
 
-            <button id="close-login" class="mt-4 text-gray-500 hover:underline">Tutup</button>
+            <button id="close-login" class="mt-4 text-gray-500 hover:underline">Close</button>
         </div>
     </div>
 
@@ -116,7 +116,7 @@
                 </button>
             </form>
 
-            <button id="close-login" class="mt-4 text-slate-500 hover:text-slate-700">Tutup</button>
+            <button id="close-login" class="mt-4 text-slate-500 hover:text-slate-700">Close</button>
         </div>
     </div>
 
@@ -127,7 +127,7 @@
 
             <form id="register-form">
                 <div class="mb-4">
-                    <label class="block text-slate-700">Nama Lengkap</label>
+                    <label class="block text-slate-700">Full Name</label>
                     <input type="text" class="w-full px-3 py-2 border rounded" required>
                 </div>
 
@@ -142,7 +142,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-slate-700">Konfirmasi Password</label>
+                    <label class="block text-slate-700">Re-Password</label>
                     <input type="password" class="w-full px-3 py-2 border rounded" required>
                 </div>
 
@@ -179,10 +179,10 @@
 
             </form>
 
-            <button id="close-register" class="mt-4 text-slate-500 hover:text-slate-700">Tutup</button>
+            <button id="close-register" class="mt-4 text-slate-500 hover:text-slate-700">Close</button>
         </div>
     </div>
-    
+
     <!-- CONTENT -->
     <main class="flex-1">
         {{ $slot }}
@@ -192,15 +192,15 @@
     <footer class="bg-teal-900 text-white">
         <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-8">
             <div>
-                <h3 class="font-semibold mb-3">About PasundanPadel</h3>
+                <h3 class="font-semibold mb-3">About</h3>
                 <p class="text-teal-200">
                     Kami menyediakan lapangan padel terbaik dengan fasilitas modern
-                    untuk pemain pemula hingga profesional.
+                    untuk pemula hingga profesional.
                 </p>
             </div>
 
             <div>
-                <h3 class="font-semibold mb-3">Link Cepat</h3>
+                <h3 class="font-semibold mb-3">Link</h3>
                 <ul class="space-y-2 text-teal-200">
                     <li><a href="/#hero">Home</a></li>
                     <li><a href="/#court">Court</a></li>
@@ -210,9 +210,53 @@
             </div>
 
             <div>
-                <h3 class="font-semibold mb-3">Kontak</h3>
+                <h3 class="font-semibold mb-3">Catch Us</h3>
                 <p class="text-teal-200">Jl. Padel No. 123, Bandung</p>
                 <p class="text-teal-200">info@pasundanpadel.com</p>
+                <p class="text-teal-200">+62 812-3304-2025</p>
+                <div class="flex items-center gap-4 mt-3">
+                    <!-- Instagram -->
+                    <a href="https://instagram.com/pasundanpadel" target="_blank"
+                        class="text-teal-200 hover:text-teal-100 transition" aria-label="Instagram">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" />
+                            <path d="M16 11.37a4 4 0 1 1-7.9 1.26 4 4 0 0 1 7.9-1.26z" />
+                            <line x1="17.5" y1="6.5" x2="17.5" y2="6.5" />
+                        </svg>
+                    </a>
+
+                    <!-- Facebook -->
+                    <a href="https://facebook.com/pasundanpadel" target="_blank"
+                        class="text-teal-200 hover:text-teal-100 transition" aria-label="Facebook">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <path
+                                d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-2.9h2V9.8c0-2 1.2-3.1 3-3.1.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.2v1.9h2.3l-.4 2.9h-1.9v7A10 10 0 0 0 22 12z" />
+                        </svg>
+                    </a>
+
+                    <!-- TikTok -->
+                    <a href="https://tiktok.com/@pasundanpadel" target="_blank"
+                        class="text-teal-200 hover:text-teal-100 transition" aria-label="TikTok">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <path
+                                d="M12.5 3v10.2a3.3 3.3 0 1 1-2.3-3.1V7.6a6.4 6.4 0 1 0 4.6 6.1V8.8c1.2.9 2.6 1.4 4.1 1.5V7.9a4.9 4.9 0 0 1-4.1-4.9h-2.3z" />
+                        </svg>
+                    </a>
+
+                </div>
+
+
+
+                </a>
+
+
+
             </div>
         </div>
 
@@ -221,7 +265,7 @@
         </div>
     </footer>
 
-    <!-- SCRIPT -->
+    {{-- <!-- SCRIPT --> nnih byar tw aj bentukan formny gimna --}}
     <script>
         const loginModal = document.getElementById('login-modal');
         const registerModal = document.getElementById('register-modal');
