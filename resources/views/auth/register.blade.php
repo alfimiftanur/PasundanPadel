@@ -37,7 +37,7 @@
                 <div class="flex items-center my-6">
                     <hr class="flex-1 border-gray-300">
                     <span class="px-3 text-sm text-gray-400">
-                        Register with
+                        OR
                     </span>
                     <hr class="flex-1 border-gray-300">
                 </div>
