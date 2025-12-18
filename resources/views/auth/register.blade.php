@@ -33,6 +33,24 @@
             <button class="w-full bg-teal-600 text-white py-2 rounded-full">
                 Register
             </button>
+            <!-- Divider -->
+                <div class="flex items-center my-6">
+                    <hr class="flex-1 border-gray-300">
+                    <span class="px-3 text-sm text-gray-400">
+                        Register with
+                    </span>
+                    <hr class="flex-1 border-gray-300">
+                </div>
+
+                <!-- Social Login -->
+                <div class="flex justify-center gap-6">
+                    <!-- Google -->
+                    <button type="button" class="p-3 rounded-full border border-gray-300 hover:bg-gray-100 transition">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google"
+                            class="w-6 h-6">
+                    </button>
+                </div>
+            </form>
         </form>
 
         <a href="{{ url()->previous() }}" class="block text-center mt-4 text-gray-500">
