@@ -28,6 +28,11 @@ Route::get('/court/{id}', function ($id) {
     return view('court.detail');
 })->name('court.detail');
 
+Route::get('/booking/{court}', function ($court) {
+    return view('booking.create', [
+        'court' => $court
+    ]);
+})->name('booking.create');
 
 /* AUTH ACTION */
 Route::post('/login', [AuthController::class, 'authenticate']);
