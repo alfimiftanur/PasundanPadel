@@ -24,6 +24,11 @@ Route::get('/register', function () {
         ->with('showRegister', true);
 })->name('register');
 
+Route::get('/court/{id}', function ($id) {
+    return view('court.detail');
+})->name('court.detail');
+
+
 /* AUTH ACTION */
 Route::post('/login', [AuthController::class, 'authenticate']);
 Route::post('/register', [AuthController::class, 'store']);
