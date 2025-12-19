@@ -156,22 +156,6 @@
         </div>
     </footer>
     
-<script>
-    const toggleBtn = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    toggleBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-
-    // auto close kalau klik menu
-    document.querySelectorAll('#mobile-menu a, #mobile-menu button').forEach(el => {
-        el.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
-        });
-    });
-</script>
-
     <!-- ================= AUTH MODAL OVERLAY ================= -->
     @if (session('showLogin'))
         @include('auth.login')
