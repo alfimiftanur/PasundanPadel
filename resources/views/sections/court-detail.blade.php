@@ -9,22 +9,22 @@
             <nav class="text-sm text-slate-500">
                 <a href="/" class="hover:text-teal-600">Beranda</a> /
                 <a href="/court" class="hover:text-teal-600">Lapangan</a> /
-                <span class="text-slate-700 font-medium">Padel Arena Jakarta</span>
+                <span class="text-slate-700 font-medium">Padel Arena Bandung</span>
             </nav>
 
             {{-- Image --}}
             <div class="rounded-3xl overflow-hidden shadow">
                 <img src="https://images.unsplash.com/photo-1622668460389-f92e9ed21616?q=80&w=1200"
-                     alt="Padel Arena Jakarta"
+                     alt="Padel Arena Bandung"
                      class="w-full h-[420px] object-cover">
             </div>
 
             {{-- Title & Rating --}}
             <div class="flex items-start justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-slate-900">Padel Arena Jakarta</h1>
+                    <h1 class="text-3xl font-bold text-slate-900">Padel Arena Bandung</h1>
                     <p class="text-slate-500 mt-1 flex items-center gap-2">
-                        <span>📍 Jakarta Selatan</span>
+                        <span>📍 Bandung </span>
                         <span class="px-2 py-0.5 bg-teal-100 text-teal-700 rounded-full text-xs">Indoor</span>
                     </p>
                 </div>
