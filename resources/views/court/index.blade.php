@@ -7,9 +7,7 @@
     {{-- Alpine --}}
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <section id="courtlist"
-        class="bg-amber-50 min-h-screen"
-        x-data="{ openFilter: false }">
+    <section id="courtlist" class="bg-amber-50 min-h-screen" x-data="{ openFilter: false }">
 
         <div class="max-w-7xl mx-auto px-6 py-12">
 
@@ -20,8 +18,7 @@
 
             <!-- Mobile Filter Button -->
             <div class="md:hidden mb-6">
-                <button
-                    @click="openFilter = !openFilter"
+                <button @click="openFilter = !openFilter"
                     class="w-full bg-teal-700 text-white py-3 rounded-full
                            font-semibold flex items-center justify-center gap-2">
                     <span x-text="openFilter ? 'Hide Filters' : 'Show Filters'"></span>
@@ -31,10 +28,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 min-h-[calc(100vh-160px)]">
 
                 <!-- ================= FILTER SIDEBAR ================= -->
-                <aside
-                    x-show="openFilter || window.innerWidth >= 768"
-                    x-transition
-                    @click.outside="openFilter = false"
+                <aside x-show="openFilter || window.innerWidth >= 768" x-transition @click.outside="openFilter = false"
                     class="md:col-span-1
                            md:sticky md:top-16 md:-mt-24
                            bg-teal-900/90 backdrop-blur
@@ -85,8 +79,7 @@
 
                     <!-- Buttons -->
                     <div class="space-y-3">
-                        <button
-                            @click="openFilter = false"
+                        <button @click="openFilter = false"
                             class="w-full bg-teal-500 hover:bg-teal-400
                                    text-slate-900 py-3 rounded-full
                                    font-semibold transition">
@@ -113,14 +106,7 @@
                         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8
                                max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
 
-                        @foreach ([
-                            'Pasundan Court A',
-                            'Pasundan Court B',
-                            'Pasundan Court C',
-                            'Pasundan Court D',
-                            'Pasundan Court E',
-                            'Pasundan Court F'
-                        ] as $court)
+                        @foreach (['Pasundan Court A', 'Pasundan Court B', 'Pasundan Court C', 'Pasundan Court D', 'Pasundan Court E', 'Pasundan Court F'] as $court)
                             <div
                                 class="relative rounded-3xl overflow-hidden
                                        bg-white shadow-md hover:shadow-xl
@@ -138,8 +124,7 @@
                                         Outdoor
                                     </span>
 
-                                    <img
-                                        src="https://images.unsplash.com/photo-1622668460389-f92e9ed21616?q=80&w=800"
+                                    <img src="https://images.unsplash.com/photo-1622668460389-f92e9ed21616?q=80&w=800"
                                         alt="{{ $court }}"
                                         class="w-full h-full object-cover
                                                group-hover:scale-105
