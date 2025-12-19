@@ -171,16 +171,6 @@
         });
     });
 </script>
-
-    <!-- ================= AUTH MODAL OVERLAY ================= -->
-    @if (session('showLogin'))
-        @include('auth.login')
-    @endif
-
-    @if (session('showRegister'))
-        @include('auth.register')
-    @endif
-
 </body>
 
 </html>
