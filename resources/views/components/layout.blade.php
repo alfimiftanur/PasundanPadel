@@ -136,6 +136,7 @@
             &copy; NEEDSCRYPT. The Ball on Your Court.
         </div>
     </footer>
+    
 
     <!-- ================= AUTH MODAL OVERLAY ================= -->
     @if (session('showLogin'))
