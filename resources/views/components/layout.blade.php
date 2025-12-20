@@ -47,9 +47,16 @@
                     @endguest
 
                     @auth
-                        <form action="{{ route('logout') }}" method="POST">
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="bg-amber-500 text-white px-6 py-2 rounded-full hover:bg-amber-600 font-semibold">
+                                Admin Dashboard
+                            </a>
+                        @endif
+
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
                             @csrf
-                            <button class="bg-teal-600 text-slate-900 px-6 py-2 rounded-full hover:bg-teal-500">
+                            <button class="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700">
                                 Logout
                             </button>
                         </form>
@@ -85,9 +92,15 @@
                 @endguest
 
                 @auth
+                    @if(auth()->user()->role === 'admin')
+                        <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 text-white bg-amber-500 rounded font-semibold">
+                            Admin Dashboard
+                        </a>
+                    @endif
+
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button class="block w-full text-left px-3 py-2 text-white">
+                        <button class="block w-full text-left px-3 py-2 text-white bg-red-600 rounded hover:bg-red-700">
                             Logout
                         </button>
                     </form>
@@ -156,6 +169,22 @@
         </div>
     </footer>
     
+<script>
+    const toggleBtn = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    toggleBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // auto close kalau klik menu
+    document.querySelectorAll('#mobile-menu a, #mobile-menu button').forEach(el => {
+        el.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+    });
+</script>
+
     <!-- ================= AUTH MODAL OVERLAY ================= -->
     @if (session('showLogin'))
         @include('auth.login')
