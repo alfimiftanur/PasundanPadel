@@ -164,7 +164,7 @@
                                             Rp 250.000 / hr
                                         </span>
 
-                                        <a href="/court"
+                                        <a href="{{ route('court.detail', 1) }}"
                                             class="bg-teal-600 hover:bg-teal-500
                                                    text-white px-6 py-2
                                                    rounded-full text-sm
