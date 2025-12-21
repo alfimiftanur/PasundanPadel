@@ -150,8 +150,3 @@
     });
 </script>
 </x-layout>
-            </div>
-        </form>
-    </div>
-</div>
-</x-layout>

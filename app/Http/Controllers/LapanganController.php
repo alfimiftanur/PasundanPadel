@@ -48,7 +48,7 @@ class LapanganController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_lapangan' => 'required|string|max:255',
+            'nama_lapangan' => 'required|string|max:255', 
             'tipe_lapangan' => 'required|string|in:Indoor,Outdoor',
             'deskripsi' => 'required|string',
             'kapasitas' => 'required|integer|min:1',
@@ -99,13 +99,13 @@ class LapanganController extends Controller
             'lokasi' => 'required|string',
         ]);
 
-        // Handle delete foto lama
+    
         if ($request->input('hapus_foto_lama') == '1' && $lapangan->foto) {
             \Storage::disk('public')->delete($lapangan->foto);
             $validated['foto'] = null;
         }
 
-        // Handle upload foto baru
+    
         if ($request->hasFile('foto')) {
             if ($lapangan->foto) {
                 \Storage::disk('public')->delete($lapangan->foto);
