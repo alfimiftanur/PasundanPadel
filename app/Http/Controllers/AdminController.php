@@ -1,14 +1,15 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Lapangan;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public function dashboard(Request $request)
     {
-        
-        $totalCourts = 6;
+        $lapangans = Lapangan::all();
+        $totalCourts = Lapangan::count();
         $totalUsers = \App\Models\User::count();
         $totalBookings = 1;
         $pendingBookings = 0;
@@ -19,6 +20,7 @@ class AdminController extends Controller
         $monthRevenue = 0;
 
         return view('dashboard.admin-dashboard', compact(
+            'lapangans',
             'totalCourts',
             'totalUsers',
             'totalBookings',

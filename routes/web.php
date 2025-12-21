@@ -3,16 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LapanganController;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [LapanganController::class, 'indexHome'])->name('home');
 
-Route::get('/court', function () {
-    return view('court.index', [
-        'title' => 'Pasundan Padel - Court List'
-    ]);
-})->name('court.index');
+Route::get('/court', [LapanganController::class, 'indexPublic'])->name('court.index');
 
 /* AUTH MODAL TRIGGER */
 Route::get('/login', function () {
@@ -43,4 +38,5 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 /* ADMIN ROUTES */
 Route::middleware(['role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::resource('lapangan', LapanganController::class);
 });
