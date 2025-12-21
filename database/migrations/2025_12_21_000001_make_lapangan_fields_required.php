@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Set default value untuk existing rows yang kosong
+        
         \DB::table('lapangans')
             ->whereNull('deskripsi')
             ->orWhere('deskripsi', '')
