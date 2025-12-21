@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'PasundanPadel' }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.2/cdn.min.js" defer></script>
 </head>
 
 <body class="bg-amber-50 text-slate-900 scroll-smooth flex flex-col min-h-screen">
 
-    <!-- ================= NAVBAR ================= -->
+    <!-- navbar -->
     <nav class="bg-teal-700 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -25,14 +26,15 @@
                 <!-- Menu -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="/#hero" class="text-white hover:text-teal-200">Home</a>
+                    <a href="/#us" class="text-white hover:text-teal-200">Experience</a>
                     <a href="{{ route('court.index') }}" class="text-white hover:text-teal-200">
                         Court
                     </a>
-                    <a href="/us" class="text-white hover:text-teal-200">Us</a>
-                    <a href="/contact" class="text-white hover:text-teal-200">Contact</a>
+                    <a href="/#schedule" class="text-white hover:text-teal-200">Schedule</a>
+
                 </div>
 
-                <!-- AUTH BUTTON -->
+                <!-- auth button-->
                 <div class="hidden md:flex items-center space-x-4">
                     @guest
                         <a href="{{ route('login') }}"
@@ -47,7 +49,7 @@
                     @endguest
 
                     @auth
-                        @if(auth()->user()->role === 'admin')
+                        @if (auth()->user()->role === 'admin')
                             <a href="{{ route('admin.dashboard') }}"
                                 class="bg-amber-500 text-white px-6 py-2 rounded-full hover:bg-amber-600 font-semibold">
                                 Admin Dashboard
@@ -75,12 +77,12 @@
 
             </div>
 
-            <!-- MOBILE MENU -->
+            <!-- mobile menu -->
             <div id="mobile-menu" class="hidden md:hidden bg-teal-600 px-2 pt-2 pb-3 space-y-1">
                 <a href="/#hero" class="block px-3 py-2 text-white">Home</a>
                 <a href="{{ route('court.index') }}" class="block px-3 py-2 text-white hover:text-teal-200"> Court</a>
-                <a href="/us" class="block px-3 py-2 text-white">Us</a>
-                <a href="/contact" class="block px-3 py-2 text-white">Contact</a>
+                <a href="/#us" class="block px-3 py-2 text-white">Experience</a>
+                
 
                 @guest
                     <a href="{{ route('login') }}" class="block px-3 py-2 text-white">
@@ -92,8 +94,9 @@
                 @endguest
 
                 @auth
-                    @if(auth()->user()->role === 'admin')
-                        <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 text-white bg-amber-500 rounded font-semibold">
+                    @if (auth()->user()->role === 'admin')
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="block px-3 py-2 text-white bg-amber-500 rounded font-semibold">
                             Admin Dashboard
                         </a>
                     @endif
@@ -168,22 +171,22 @@
             &copy; NEEDSCRYPT. The Ball on Your Court.
         </div>
     </footer>
-    
-<script>
-    const toggleBtn = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
 
-    toggleBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
+    <script>
+        const toggleBtn = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
 
-    // auto close kalau klik menu
-    document.querySelectorAll('#mobile-menu a, #mobile-menu button').forEach(el => {
-        el.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
+        toggleBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
-    });
-</script>
+
+        // auto close kalau klik menu
+        document.querySelectorAll('#mobile-menu a, #mobile-menu button').forEach(el => {
+            el.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    </script>
 
     <!-- ================= AUTH MODAL OVERLAY ================= -->
     @if (session('showLogin'))
