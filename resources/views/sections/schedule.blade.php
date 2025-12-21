@@ -1,5 +1,5 @@
 {{-- Schedule Section --}}
-<section class="bg-[#dfe6db] py-12">
+<section id="schedule" class="bg-[#dfe6db] py-12">
     <div class="max-w-7xl mx-auto px-6 py-10">
 
         <!-- Header -->
@@ -235,8 +235,16 @@
                 </tbody>
             </table>
         </div>
-
+ <div class="flex justify-center">
+        <a href="/court"
+            class="inline-block mt-4 text-sm uppercase tracking-wide border-b border-slate-900 pb-1">
+            Book Now
+        </a>
     </div>
+    </div>
+   
+
+
 </section>
 
 <!-- Status Badge Component (dummy) -->

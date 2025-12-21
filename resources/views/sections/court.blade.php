@@ -168,15 +168,11 @@
         </div>
 
          <!-- CTA -->
-        <div class="text-center mt-12">
-            <a href="/court"
-               class="inline-flex items-center gap-2
-                      bg-slate-900 hover:bg-slate-800
-                      text-amber-50 px-10 py-3
-                      rounded-full text-sm
-                      font-semibold tracking-wide transition">
-                View All Courts →
-            </a>
-        </div>
+        <div class="flex justify-center">
+        <a href="/court"
+            class="inline-block mt-4 text-sm uppercase tracking-wide border-b border-slate-900 pb-1">
+            View All Courts
+        </a>
+    </div>
     </div>
 </section>
