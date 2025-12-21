@@ -4,11 +4,11 @@
 
         <!-- Heading -->
         <div class="text-center mb-10">
-            <h2 class="text-3xl md:text-4xl font-bold text-slate-900">
-                Our Padel Courts
+            <h2 class="italic text-3xl md:text-4xl font-bold text-slate-900">
+                Explore Our Courts
             </h2>
-            <p class="mt-2 text-slate-600">
-                Lapangan pilihan dengan fasilitas terbaik
+            <p class="mt-2 italic text-slate-600">
+                Every court is built to support your best performance.
             </p>
         </div>
 
