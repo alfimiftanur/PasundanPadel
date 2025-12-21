@@ -92,7 +92,7 @@
             <!-- Quick Actions -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <!-- Kelola Lapangan -->
-                <a href="{{ route('court.index') }}" class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
+                <a href="{{ route('lapangan.index') }}" class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
                     <div class="bg-blue-50 p-3 rounded-xl">
                         <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
@@ -118,7 +118,7 @@
                 </a>
 
                 <!-- Tambah Lapangan -->
-                <a href="#" class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
+                <a href="{{ route('lapangan.create') }}" class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
                     <div class="bg-purple-50 p-3 rounded-xl">
                         <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -147,95 +147,71 @@
             <!-- Recent Bookings Table -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100">
                 <div class="flex justify-between items-center p-6 border-b border-gray-100">
-                    <h2 class="text-xl font-semibold text-gray-900">Recent Bookings</h2>
-                    <a href="#" class="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1">
-                        Lihat Semua 
+                    <h2 class="text-xl font-semibold text-gray-900">Daftar Lapangan</h2>
+                    <a href="{{ route('lapangan.index') }}" class="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1">
+                        Kelola Semua 
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </a>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="text-left text-gray-500 text-sm border-b border-gray-100">
-                                <th class="px-6 py-4 font-medium">ID</th>
-                                <th class="px-6 py-4 font-medium">USER</th>
-                                <th class="px-6 py-4 font-medium">LAPANGAN</th>
-                                <th class="px-6 py-4 font-medium">JADWAL</th>
-                                <th class="px-6 py-4 font-medium">HARGA</th>
-                                <th class="px-6 py-4 font-medium">STATUS</th>
-                                <th class="px-6 py-4 font-medium">PAYMENT</th>
-                                <th class="px-6 py-4 font-medium">AKSI</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($recentBookings ?? [] as $booking)
-                            <tr class="border-b border-gray-50 hover:bg-gray-50">
-                                <td class="px-6 py-4 text-gray-900">#{{ $booking->id }}</td>
-                                <td class="px-6 py-4">
-                                    <div>
-                                        <p class="text-gray-900 font-medium">{{ $booking->user->name ?? 'User Demo' }}</p>
-                                        <p class="text-gray-400 text-sm">{{ $booking->user->email ?? 'user@padelcourt.com' }}</p>
+
+                @if ($lapangans->isEmpty())
+                    <div class="p-6 text-center text-gray-500">
+                        <p>Belum ada lapangan. <a href="{{ route('lapangan.create') }}" class="text-blue-600 hover:underline">Buat lapangan baru</a></p>
+                    </div>
+                @else
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                        @foreach ($lapangans as $lapangan)
+                            <div class="rounded-lg overflow-hidden bg-white border border-gray-200 hover:shadow-lg transition-shadow">
+                                <!-- Image -->
+                                @if ($lapangan->foto)
+                                    <img src="{{ asset('storage/' . $lapangan->foto) }}" alt="{{ $lapangan->nama_lapangan }}" class="w-full h-40 object-cover">
+                                @else
+                                    <div class="w-full h-40 bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                                        <span class="text-white text-sm">Tidak ada foto</span>
                                     </div>
-                                </td>
-                                <td class="px-6 py-4 text-gray-900">{{ $booking->court->name ?? 'Grand Padel Club' }}</td>
-                                <td class="px-6 py-4">
-                                    <p class="text-gray-900">{{ $booking->date ?? '17 Dec 2025' }}</p>
-                                    <p class="text-gray-400 text-sm">{{ $booking->time ?? '18:00 - 19:00' }}</p>
-                                </td>
-                                <td class="px-6 py-4 text-gray-900">Rp {{ number_format($booking->price ?? 120000, 0, ',', '.') }}</td>
-                                <td class="px-6 py-4">
-                                    @if(($booking->status ?? 'cancelled') == 'confirmed')
-                                        <span class="text-green-500">Confirmed</span>
-                                    @elseif(($booking->status ?? 'cancelled') == 'pending')
-                                        <span class="text-yellow-500">Pending</span>
-                                    @else
-                                        <span class="text-red-500">Cancelled</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4">
-                                    @if(($booking->payment_status ?? 'rejected') == 'paid')
-                                        <span class="text-green-500">Paid</span>
-                                    @elseif(($booking->payment_status ?? 'rejected') == 'pending')
-                                        <span class="text-yellow-500">Pending</span>
-                                    @else
-                                        <span class="text-red-500">Rejected</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4">
-                                    <a href="#" class="text-gray-600 hover:text-gray-900">Detail</a>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr class="border-b border-gray-50">
-                                <td class="px-6 py-4 text-gray-900">#1</td>
-                                <td class="px-6 py-4">
-                                    <div>
-                                        <p class="text-gray-900 font-medium">User Demo</p>
-                                        <p class="text-gray-400 text-sm">user@padelcourt.com</p>
+                                @endif
+
+                                <!-- Content -->
+                                <div class="p-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h3 class="text-lg font-semibold text-gray-900">{{ $lapangan->nama_lapangan }}</h3>
+                                        <span class="text-xs px-2 py-1 rounded text-white
+                                            @if ($lapangan->status === 'tersedia') bg-green-500
+                                            @elseif ($lapangan->status === 'tidak tersedia') bg-red-500
+                                            @else bg-yellow-500
+                                            @endif">
+                                            {{ ucfirst($lapangan->status) }}
+                                        </span>
                                     </div>
-                                </td>
-                                <td class="px-6 py-4 text-gray-900">Grand Padel Club</td>
-                                <td class="px-6 py-4">
-                                    <p class="text-gray-900">17 Dec 2025</p>
-                                    <p class="text-gray-400 text-sm">18:00 - 19:00</p>
-                                </td>
-                                <td class="px-6 py-4 text-gray-900">Rp 120.000</td>
-                                <td class="px-6 py-4">
-                                    <span class="text-red-500">Cancelled</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="text-red-500">Rejected</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <a href="#" class="text-gray-600 hover:text-gray-900">Detail</a>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+
+                                    <div class="text-sm text-gray-600 mb-3 space-y-1">
+                                        <p><strong>Tipe:</strong> {{ $lapangan->tipe_lapangan }}</p>
+                                        <p><strong>Harga:</strong> Rp {{ number_format($lapangan->harga_per_jam, 0, ',', '.') }}/jam</p>
+                                        <p><strong>Kapasitas:</strong> {{ $lapangan->kapasitas }} pemain</p>
+                                    </div>
+
+                                    <div class="flex gap-2">
+                                        <a href="{{ route('lapangan.show', $lapangan) }}" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold py-2 px-2 rounded text-center">
+                                            Lihat
+                                        </a>
+                                        <a href="{{ route('lapangan.edit', $lapangan) }}" class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-semibold py-2 px-2 rounded text-center">
+                                            Edit
+                                        </a>
+                                        <form action="{{ route('lapangan.destroy', $lapangan) }}" method="POST" class="flex-1" onsubmit="return confirm('Yakin ingin menghapus?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white text-xs font-semibold py-2 px-2 rounded">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
     </div>

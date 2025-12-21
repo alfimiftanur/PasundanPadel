@@ -106,7 +106,7 @@
                         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8
                                max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
 
-                        @foreach (['Pasundan Court A', 'Pasundan Court B', 'Pasundan Court C', 'Pasundan Court D', 'Pasundan Court E', 'Pasundan Court F'] as $court)
+                        @forelse ($lapangans as $lapangan)
                             <div
                                 class="relative rounded-3xl overflow-hidden
                                        bg-white shadow-md hover:shadow-xl
@@ -121,35 +121,47 @@
                                                bg-teal-600 text-white
                                                font-semibold px-2.5 py-1
                                                text-[11px] rounded-full z-10">
-                                        Outdoor
+                                        {{ $lapangan->tipe_lapangan }}
                                     </span>
 
-                                    <img src="https://images.unsplash.com/photo-1622668460389-f92e9ed21616?q=80&w=800"
-                                        alt="{{ $court }}"
-                                        class="w-full h-full object-cover
-                                               group-hover:scale-105
-                                               transition duration-500">
+                                    @if ($lapangan->foto)
+                                        <img src="{{ asset('storage/' . $lapangan->foto) }}"
+                                            alt="{{ $lapangan->nama_lapangan }}"
+                                            class="w-full h-full object-cover
+                                                   group-hover:scale-105
+                                                   transition duration-500">
+                                    @else
+                                        <div class="w-full h-full bg-gradient-to-br from-slate-300 to-slate-400 flex items-center justify-center">
+                                            <span class="text-white text-sm">Tidak ada foto</span>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <!-- Content -->
                                 <div class="p-6 text-center">
                                     <h3 class="text-lg font-semibold text-slate-900">
-                                        {{ $court }}
+                                        {{ $lapangan->nama_lapangan }}
                                     </h3>
 
-                                    <p class="text-slate-500 text-sm mb-4">
-                                        Bandung, Indonesia
+                                    <p class="text-slate-500 text-sm mb-2">
+                                        {{ $lapangan->lokasi ?? 'Bandung, Indonesia' }}
                                     </p>
+
+                                    @if ($lapangan->deskripsi)
+                                        <p class="text-slate-400 text-xs mb-4 line-clamp-2">
+                                            {{ $lapangan->deskripsi }}
+                                        </p>
+                                    @endif
 
                                     <div class="flex flex-col items-center gap-4">
                                         <span
                                             class="bg-teal-100 text-teal-700
                                                    px-4 py-1 rounded-full
                                                    text-sm font-semibold">
-                                            Rp 250.000 / hr
+                                            Rp {{ number_format($lapangan->harga_per_jam, 0, ',', '.') }} / jam
                                         </span>
 
-                                        <a href="{{ route('court.detail', 1) }}"
+                                        <a href="{{ route('court.detail', $lapangan->id) }}"
                                             class="bg-teal-600 hover:bg-teal-500
                                                    text-white px-6 py-2
                                                    rounded-full text-sm
@@ -159,7 +171,11 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="col-span-3 text-center py-12">
+                                <p class="text-slate-500 text-lg">Belum ada lapangan tersedia saat ini.</p>
+                            </div>
+                        @endforelse
 
                     </div>
                 </div>
