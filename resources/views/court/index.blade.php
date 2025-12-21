@@ -4,9 +4,6 @@
         Pasundan Padel – Court List
     </x-slot:title>
 
-    {{-- Alpine --}}
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     <section id="courtlist" class="bg-amber-50 min-h-screen" x-data="{ openFilter: false }">
 
         <div class="max-w-7xl mx-auto px-6 py-12">
