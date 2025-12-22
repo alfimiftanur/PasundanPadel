@@ -51,6 +51,41 @@ class JadwalController extends Controller
         ));
     }
 
+    public function indexPublic(Request $request)
+    {
+        $selectedDate   = $request->get('date', now()->format('Y-m-d'));
+        $selectedCourtId = $request->get('court_id');
+
+        $lapangans = Lapangan::orderBy('nama_lapangan')->get();
+
+        $displayedLapangans = $selectedCourtId
+            ? Lapangan::where('id', $selectedCourtId)->get()
+            : $lapangans;
+
+        $timeSlots = [];
+        for ($hour = 8; $hour < 22; $hour++) {
+            $timeSlots[] = str_pad($hour, 2, '0', STR_PAD_LEFT).':00';
+        }
+
+        $jadwals = Jadwal::with('lapangan')
+            ->whereDate('date', $selectedDate)
+            ->when($selectedCourtId, function ($q) use ($selectedCourtId) {
+                $q->where('court_id', $selectedCourtId);
+            })
+            ->get()
+            ->groupBy('court_id');
+
+        // Bedanya hanya di view yang dipakai
+        return view('schedule.index', compact(
+            'lapangans',
+            'displayedLapangans',
+            'timeSlots',
+            'jadwals',
+            'selectedDate',
+            'selectedCourtId'
+        ));
+    }
+
     // Menampilkan form untuk mengatur jadwal, membuat jadwal baru dan mengubah jadwal yang sudah ada.
     public function edit(Request $request)
     {
