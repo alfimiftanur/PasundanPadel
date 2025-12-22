@@ -30,7 +30,7 @@
                     <a href="{{ route('court.index') }}" class="text-white hover:text-teal-200">
                         Court
                     </a>
-                    <a href="/#schedule" class="text-white hover:text-teal-200">Schedule</a>
+                    <a href="/schedule" class="text-white hover:text-teal-200">Schedule</a>
 
                 </div>
 
