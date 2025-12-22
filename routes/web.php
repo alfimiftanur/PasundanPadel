@@ -10,6 +10,8 @@ Route::get('/', [LapanganController::class, 'indexHome'])->name('home');
 
 Route::get('/court', [LapanganController::class, 'indexPublic'])->name('court.index');
 
+Route::get('/schedule', [JadwalController::class, 'indexPublic'])->name('user.schedule');
+
 
 /* AUTH MODAL TRIGGER */
 Route::get('/login', function () {
