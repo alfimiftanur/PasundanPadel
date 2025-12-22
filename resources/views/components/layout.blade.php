@@ -182,10 +182,6 @@
         el.addEventListener('click', () => {
             mobileMenu.classList.add('hidden');
         });
-<<<<<<< Updated upstream
-    });
-</script>
-=======
 
         document.querySelectorAll('#mobile-menu a, #mobile-menu button').forEach(el => {
             el.addEventListener('click', () => {
@@ -193,7 +189,6 @@
             });
         });
     </script>
->>>>>>> Stashed changes
 
     
     @if (session('success'))
@@ -274,7 +269,6 @@
         }
     </style>
 
-    <!-- ================= AUTH MODAL OVERLAY ================= -->
     @if (session('showLogin'))
         @include('auth.login')
     @endif
