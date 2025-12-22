@@ -3,6 +3,15 @@
 
         <h2 class="text-2xl font-bold mb-4">Register</h2>
 
+        @if (session('success'))
+            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{{ session('success') }}</span>
+            </div>
+        @endif
+
         <form method="POST" action="/register">
             @csrf
 
