@@ -41,7 +41,7 @@
 
                     <div class="space-y-3">
 
-                        <!-- Location (PENTING) -->
+                        <!-- Location -->
                         <select name="location"
                             class="w-full px-4 py-3 rounded-xl border bg-white/70
                focus:outline-none focus:ring-2 focus:ring-teal-500">
@@ -56,11 +56,7 @@
                             class="w-full px-4 py-3 rounded-xl border
                focus:outline-none focus:ring-2 focus:ring-teal-500">
 
-                        <!-- Time -->
-                        <input type="time" name="time"
-                            class="w-full px-4 py-3 rounded-xl border
-               focus:outline-none focus:ring-2 focus:ring-teal-500">
-
+                     
                         <!-- Button -->
                         <button
                             class="w-full bg-teal-600 hover:bg-teal-500
