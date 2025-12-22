@@ -193,9 +193,6 @@
                                     </div>
 
                                     <div class="flex gap-2">
-                                        <a href="{{ route('lapangan.show', $lapangan) }}" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold py-2 px-2 rounded text-center">
-                                            Lihat
-                                        </a>
                                         <a href="{{ route('lapangan.edit', $lapangan) }}" class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-semibold py-2 px-2 rounded text-center">
                                             Edit
                                         </a>
