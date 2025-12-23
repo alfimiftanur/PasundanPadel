@@ -56,7 +56,9 @@ class JadwalController extends Controller
         $selectedDate   = $request->get('date', now()->format('Y-m-d'));
         $selectedCourtId = $request->get('court_id');
 
-        $lapangans = Lapangan::orderBy('nama_lapangan')->get();
+        $lapangans = Lapangan::where('status', 'tersedia')
+        ->orderBy('nama_lapangan')
+        ->get();
 
         $displayedLapangans = $selectedCourtId
             ? Lapangan::where('id', $selectedCourtId)->get()
