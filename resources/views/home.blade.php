@@ -3,7 +3,7 @@
     @include('sections.hero')
     @include('sections.us-slider')
     @include('sections.court')
-    @include('sections.schedule')
+
 
 
 

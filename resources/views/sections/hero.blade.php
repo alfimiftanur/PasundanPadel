@@ -34,7 +34,7 @@
         </div>
     </div>
     <!-- Booking Card -->
-    <div class="hidden md:block">
+    <div class="hidden md:block md:-translate-x-6">
         <div class="bg-white/40 backdrop-blur-md rounded-3xl p-6
            border border-white/60 shadow-lg">
 

@@ -1,32 +1,31 @@
 {{-- Our Courts Section --}}
-<section id="court" class="bg-amber-50 py-12 md:py-16">
+<section id="court" class="bg-amber-50 py-12 md:py-14">
     <div class="max-w-7xl mx-auto px-6">
 
         <!-- Heading -->
-        <div class="text-center mb-10">
+        <div class="text-center mb-8">
             <h2 class="italic text-3xl md:text-4xl font-bold text-slate-900">
                 Explore Our Courts
             </h2>
-            <p class="mt-2 italic text-slate-600">
+            <p class="mt-2 italic text-slate-600 text-sm md:text-base">
                 Every court is built to support your best performance.
             </p>
         </div>
 
         <!-- Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
 
-            <!-- CARD 1 -->
-            <div class="rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-xl transition group">
+            <!-- CARD -->
+            <div class="rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-lg transition group">
 
                 <!-- Image -->
-                <div class="relative h-52 bg-slate-200 overflow-hidden">
+                <div class="relative h-44 bg-slate-200 overflow-hidden">
 
-                    <!-- Badge -->
                     <span
-                        class="absolute top-4 left-4
+                        class="absolute top-3 left-3
                                bg-teal-600 text-white
-                               text-xs font-semibold
-                               px-3 py-1 rounded-full z-10">
+                               text-[11px] font-semibold
+                               px-3 py-0.5 rounded-full z-10">
                         Indoor
                     </span>
 
@@ -39,15 +38,15 @@
                 </div>
 
                 <!-- Content -->
-                <div class="p-6 text-center">
-                    <h3 class="text-lg font-semibold text-slate-900">
+                <div class="p-5 text-center">
+                    <h3 class="text-base font-semibold text-slate-900">
                         Pasundan Court A
                     </h3>
-                    <p class="text-slate-500 text-sm mb-4">
+                    <p class="text-slate-500 text-sm mb-3">
                         Bandung, Indonesia
                     </p>
 
-                    <div class="flex flex-col items-center gap-4">
+                    <div class="flex flex-col items-center gap-3">
                         <span
                             class="bg-teal-100 text-teal-700
                                    px-4 py-1 rounded-full
@@ -57,7 +56,7 @@
 
                         <a href="{{ route('court.detail', 1) }}"
                             class="bg-teal-600 hover:bg-teal-500
-                                   text-white px-6 py-2
+                                   text-white px-5 py-2
                                    rounded-full text-sm
                                    font-semibold transition">
                             Book Now
@@ -67,14 +66,13 @@
             </div>
 
             <!-- CARD 2 -->
-            <div class="rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-xl transition group">
-
-                <div class="relative h-52 bg-slate-200 overflow-hidden">
+            <div class="rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-lg transition group">
+                <div class="relative h-44 bg-slate-200 overflow-hidden">
                     <span
-                        class="absolute top-4 left-4
+                        class="absolute top-3 left-3
                                bg-emerald-600 text-white
-                               text-xs font-semibold
-                               px-3 py-1 rounded-full z-10">
+                               text-[11px] font-semibold
+                               px-3 py-0.5 rounded-full z-10">
                         Outdoor
                     </span>
 
@@ -86,15 +84,15 @@
                                transition duration-500">
                 </div>
 
-                <div class="p-6 text-center">
-                    <h3 class="text-lg font-semibold text-slate-900">
+                <div class="p-5 text-center">
+                    <h3 class="text-base font-semibold text-slate-900">
                         Pasundan Court B
                     </h3>
-                    <p class="text-slate-500 text-sm mb-4">
+                    <p class="text-slate-500 text-sm mb-3">
                         Bandung, Indonesia
                     </p>
 
-                    <div class="flex flex-col items-center gap-4">
+                    <div class="flex flex-col items-center gap-3">
                         <span
                             class="bg-teal-100 text-teal-700
                                    px-4 py-1 rounded-full
@@ -104,7 +102,7 @@
 
                         <a href="/court"
                             class="bg-teal-600 hover:bg-teal-500
-                                   text-white px-6 py-2
+                                   text-white px-5 py-2
                                    rounded-full text-sm
                                    font-semibold transition">
                             Book Now
@@ -114,18 +112,13 @@
             </div>
 
             <!-- CARD 3 -->
-      <!-- CARD 1 -->
-            <div class="rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-xl transition group">
-
-                <!-- Image -->
-                <div class="relative h-52 bg-slate-200 overflow-hidden">
-
-                    <!-- Badge -->
+            <div class="rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-lg transition group">
+                <div class="relative h-44 bg-slate-200 overflow-hidden">
                     <span
-                        class="absolute top-4 left-4
+                        class="absolute top-3 left-3
                                bg-teal-600 text-white
-                               text-xs font-semibold
-                               px-3 py-1 rounded-full z-10">
+                               text-[11px] font-semibold
+                               px-3 py-0.5 rounded-full z-10">
                         Indoor
                     </span>
 
@@ -137,16 +130,15 @@
                                transition duration-500">
                 </div>
 
-                <!-- Content -->
-                <div class="p-6 text-center">
-                    <h3 class="text-lg font-semibold text-slate-900">
-                        Pasundan Court A
+                <div class="p-5 text-center">
+                    <h3 class="text-base font-semibold text-slate-900">
+                        Pasundan Court C
                     </h3>
-                    <p class="text-slate-500 text-sm mb-4">
+                    <p class="text-slate-500 text-sm mb-3">
                         Bandung, Indonesia
                     </p>
 
-                    <div class="flex flex-col items-center gap-4">
+                    <div class="flex flex-col items-center gap-3">
                         <span
                             class="bg-teal-100 text-teal-700
                                    px-4 py-1 rounded-full
@@ -156,7 +148,7 @@
 
                         <a href="/court"
                             class="bg-teal-600 hover:bg-teal-500
-                                   text-white px-6 py-2
+                                   text-white px-5 py-2
                                    rounded-full text-sm
                                    font-semibold transition">
                             Book Now
@@ -167,12 +159,14 @@
 
         </div>
 
-         <!-- CTA -->
-        <div class="flex justify-center">
-        <a href="/court"
-            class="inline-block mt-4 text-sm uppercase tracking-wide border-b border-slate-900 pb-1">
-            View All Courts
-        </a>
-    </div>
+        <!-- CTA -->
+        <div class="flex justify-center mt-8">
+            <a href="/court"
+                class="inline-block text-sm uppercase tracking-wide
+                       border-b border-slate-900 pb-1">
+                View All Courts
+            </a>
+        </div>
+
     </div>
 </section>
