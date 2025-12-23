@@ -26,9 +26,7 @@ class AuthController extends Controller
             return redirect()->intended('/')->with('success', 'Login berhasil!');
         }
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->onlyInput('email');
+        return back()->with('error', 'Email atau password salah.')->onlyInput('email');
     }
 
     /**
@@ -63,6 +61,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/')->with('success', 'Logout berhasil!');
+        return redirect('/')->with('popup_message', 'Logout berhasil!');
     }
 }

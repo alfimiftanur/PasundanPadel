@@ -4,10 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LapanganController;
+use App\Http\Controllers\JadwalController;
 
 Route::get('/', [LapanganController::class, 'indexHome'])->name('home');
 
 Route::get('/court', [LapanganController::class, 'indexPublic'])->name('court.index');
+
+Route::get('/schedule', [JadwalController::class, 'indexPublic'])->name('user.schedule');
+
 
 /* AUTH MODAL TRIGGER */
 Route::get('/login', function () {
@@ -39,4 +43,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::resource('lapangan', LapanganController::class);
+     // Jadwal Routes (SIMPLIFIED)
+
+
+     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
+    Route::get('/jadwal/edit', [JadwalController::class, 'edit'])->name('jadwal.edit');
+    Route::post('/jadwal', [JadwalController::class, 'store'])->name('jadwal.store');
+    Route::post('/jadwal/{id}/update-status', [JadwalController::class, 'updateStatus'])->name('jadwal.updateStatus');
 });

@@ -30,7 +30,7 @@
                     <a href="{{ route('court.index') }}" class="text-white hover:text-teal-200">
                         Court
                     </a>
-                    <a href="/#schedule" class="text-white hover:text-teal-200">Schedule</a>
+                    <a href="/schedule" class="text-white hover:text-teal-200">Schedule</a>
 
                 </div>
 
@@ -186,9 +186,93 @@
                 mobileMenu.classList.add('hidden');
             });
         });
+        
+        document.querySelectorAll('#mobile-menu a, #mobile-menu button').forEach(el => {
+            el.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
     </script>
 
-    <!-- ================= AUTH MODAL OVERLAY ================= -->
+    
+    @if (session('success'))
+        <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+            <div class="bg-white p-8 rounded-lg w-full max-w-sm text-center">
+                <div class="flex justify-center mb-4">
+                    <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Sukses!</h3>
+                <p class="text-gray-600 mb-6">{{ session('success') }}</p>
+                <button onclick="window.location.href='{{ url('/') }}'" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    @endif
+
+    @if (session('popup_message'))
+        <div id="notification" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-3 animate-fadeIn">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>{{ session('popup_message') }}</span>
+        </div>
+        <script>
+            setTimeout(() => {
+                const notif = document.getElementById('notification');
+                if (notif) {
+                    notif.style.animation = 'fadeOut 0.5s ease-out forwards';
+                    setTimeout(() => notif.remove(), 500);
+                }
+            }, 3000);
+        </script>
+    @endif
+
+    @if (session('error'))
+        <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+            <div class="bg-white p-8 rounded-lg w-full max-w-sm text-center">
+                <div class="flex justify-center mb-4">
+                    <svg class="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4v.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Gagal!</h3>
+                <p class="text-gray-600 mb-6">{{ session('error') }}</p>
+                <button onclick="window.location.href='{{ url()->previous() }}'" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    @endif
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
+
     @if (session('showLogin'))
         @include('auth.login')
     @endif
