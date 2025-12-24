@@ -4,10 +4,8 @@
 
         <!-- Heading -->
         <div class="text-center mb-10">
-            <h2 class="italic text-3xl md:text-4xl font-bold text-slate-900">
-                Explore Our Courts
-            </h2>
-            <p class="mt-2 italic text-slate-600">
+           <h4 class="italic font-serif text-teal-900 text-4xl mb-4">Explore Our Courts</h4>
+            <p class="mt-2 text-slate-600">
                 Every court is built to support your best performance.
             </p>
         </div>
@@ -94,14 +92,10 @@
 
          <!-- CTA -->
         <div class="text-center mt-12">
-            <a href="/court"
-               class="inline-flex items-center gap-2
-                      bg-slate-900 hover:bg-slate-800
-                      text-amber-50 px-10 py-3
-                      rounded-full text-sm
-                      font-semibold tracking-wide transition">
-                View All Courts →
-            </a>
+            <a href="{{ route('court.index') }}"
+                    class="inline-block mt-4 text-sm font-sans uppercase tracking-wide border-b border-slate-900 pb-1">
+            View All Courts
+                </a>
         </div>
     </div>
 </section>
