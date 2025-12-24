@@ -277,7 +277,7 @@
         @include('auth.login')
     @endif
 
-    @if (session('showRegister'))
+    @if (session('showRegister')|| $errors-> any()) 
         @include('auth.register')
     @endif
 

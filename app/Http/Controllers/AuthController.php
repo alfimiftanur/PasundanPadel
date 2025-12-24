@@ -48,8 +48,7 @@ class AuthController extends Controller
             'role' => 'user', 
         ]);
 
-        Auth::login($user);
-
+    
         return redirect('/')->with('success', 'Registrasi berhasil!');
     }
 
