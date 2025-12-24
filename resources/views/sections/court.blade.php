@@ -85,49 +85,9 @@
                     </div>
                 </div>
             @empty
-                <!-- Fallback jika tidak ada lapangan -->
-                <div class="rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-xl transition group">
-                    <div class="relative h-52 bg-slate-200 overflow-hidden">
-                        <span class="absolute top-4 left-4 bg-teal-600 text-white text-xs font-semibold px-3 py-1 rounded-full z-10">Indoor</span>
-                        <img src="https://images.unsplash.com/photo-1622668460389-f92e9ed21616?q=80&w=800" alt="Pasundan Court" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6 text-center">
-                        <h3 class="text-lg font-semibold text-slate-900">Pasundan Court A</h3>
-                        <p class="text-slate-500 text-sm mb-4">Bandung, Indonesia</p>
-                        <div class="flex flex-col items-center gap-4">
-                            <span class="bg-teal-100 text-teal-700 px-4 py-1 rounded-full text-sm font-semibold">Rp 250.000 / hr</span>
-                            <a href="#" class="bg-teal-600 hover:bg-teal-500 text-white px-6 py-2 rounded-full text-sm font-semibold transition">Book Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-xl transition group">
-                    <div class="relative h-52 bg-slate-200 overflow-hidden">
-                        <span class="absolute top-4 left-4 bg-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full z-10">Outdoor</span>
-                        <img src="https://images.unsplash.com/photo-1622668460389-f92e9ed21616?q=80&w=800" alt="Pasundan Court" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6 text-center">
-                        <h3 class="text-lg font-semibold text-slate-900">Pasundan Court B</h3>
-                        <p class="text-slate-500 text-sm mb-4">Bandung, Indonesia</p>
-                        <div class="flex flex-col items-center gap-4">
-                            <span class="bg-teal-100 text-teal-700 px-4 py-1 rounded-full text-sm font-semibold">Rp 300.000 / hr</span>
-                            <a href="#" class="bg-teal-600 hover:bg-teal-500 text-white px-6 py-2 rounded-full text-sm font-semibold transition">Book Now</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-xl transition group">
-                    <div class="relative h-52 bg-slate-200 overflow-hidden">
-                        <span class="absolute top-4 left-4 bg-teal-600 text-white text-xs font-semibold px-3 py-1 rounded-full z-10">Indoor</span>
-                        <img src="https://images.unsplash.com/photo-1622668460389-f92e9ed21616?q=80&w=800" alt="Pasundan Court" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    </div>
-                    <div class="p-6 text-center">
-                        <h3 class="text-lg font-semibold text-slate-900">Pasundan Court C</h3>
-                        <p class="text-slate-500 text-sm mb-4">Bandung, Indonesia</p>
-                        <div class="flex flex-col items-center gap-4">
-                            <span class="bg-teal-100 text-teal-700 px-4 py-1 rounded-full text-sm font-semibold">Rp 250.000 / hr</span>
-                            <a href="#" class="bg-teal-600 hover:bg-teal-500 text-white px-6 py-2 rounded-full text-sm font-semibold transition">Book Now</a>
-                        </div>
-                    </div>
-                </div>
+                <p class="col-span-full text-center text-slate-500">
+                    Tidak ada lapangan tersedia saat ini.
+                </p>
             @endforelse
 
         </div>
