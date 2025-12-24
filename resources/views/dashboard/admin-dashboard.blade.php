@@ -1,9 +1,9 @@
 <x-layout title="Admin Dashboard - PasundanPadel">
-    <div class="min-h-screen bg-gray-50 p-6">
+    <div class="min-h-screen bg-[#dfe6db] p-6">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
             <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+                <h1 class="text-3xl font-bold text-gray-900">Admin's Panel</h1>
                 <p class="text-gray-500 mt-1">Kelola sistem PasundanPadel</p>
             </div>
 
@@ -116,7 +116,7 @@
                 </a>
 
                 <!-- Kelola Booking -->
-                <a href="#"
+                <a href="/booking-list"
                     class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
                     <div class="bg-green-50 p-3 rounded-xl">
                         <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

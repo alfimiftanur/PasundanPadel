@@ -24,15 +24,31 @@ Route::get('/register', function () {
         ->with('showRegister', true);
 })->name('register');
 
+// Court Detail View
 Route::get('/court/{id}', function ($id) {
     return view('court.detail');
 })->name('court.detail');
 
+// Booking Creation View
 Route::get('/booking/{court}', function ($court) {
     return view('booking.create', [
         'court' => $court
     ]);
 })->name('booking.create');
+
+// Booking List View
+Route::get('/booking-list', function () {
+    return view('pemesanan.index', [
+        'title' => 'Kelola Booking'
+    ]);
+})->name('pemesanan.index');
+
+Route::get('/detail-booking', function () {
+    return view('pemesanan.show', [
+        'title' => 'Detail Booking',
+    ]);
+})->name('pemesanan.show');
+
 
 /* AUTH ACTION */
 Route::post('/login', [AuthController::class, 'login']);
