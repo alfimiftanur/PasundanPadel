@@ -19,9 +19,52 @@ class LapanganController extends Controller
     /**
      * Display lapangan untuk user (public view)
      */
-    public function indexPublic()
+    public function indexPublic(Request $request)
     {
-        $lapangans = Lapangan::where('status', 'tersedia')->get();
+        $query = Lapangan::where('status', 'tersedia');
+
+        // Search by name or location
+        if ($request->has('keyword') && !empty($request->keyword)) {
+            $keyword = $request->keyword;
+            $query->where(function ($q) use ($keyword) {
+                $q->where('nama_lapangan', 'like', '%' . $keyword . '%')
+                  ->orWhere('lokasi', 'like', '%' . $keyword . '%')
+                  ->orWhere('deskripsi', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        // Filter by type
+        if ($request->has('tipe') && !empty($request->tipe)) {
+            $query->where('tipe_lapangan', $request->tipe);
+        }
+
+        // Filter by price range
+        if ($request->has('min_price') && !empty($request->min_price)) {
+            $query->where('harga_per_jam', '>=', $request->min_price);
+        }
+
+        if ($request->has('max_price') && !empty($request->max_price)) {
+            $query->where('harga_per_jam', '<=', $request->max_price);
+        }
+
+        $lapangans = $query->get();
+
+        // For AJAX requests, return JSON
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'courts' => $lapangans->map(fn($l) => [
+                    'id' => $l->id,
+                    'nama_lapangan' => $l->nama_lapangan,
+                    'lokasi' => $l->lokasi,
+                    'tipe_lapangan' => $l->tipe_lapangan,
+                    'harga_per_jam' => $l->harga_per_jam,
+                    'deskripsi' => $l->deskripsi,
+                    'foto' => $l->foto,
+                ]),
+                'total' => $lapangans->count()
+            ]);
+        }
+
         return view('court.index', compact('lapangans'));
     }
 
