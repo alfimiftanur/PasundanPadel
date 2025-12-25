@@ -49,6 +49,11 @@ Route::get('/detail-booking', function () {
     ]);
 })->name('pemesanan.show');
 
+Route::get('orders-history', function (){
+    return view('booking.orders-history',[
+    ]);
+})->name('booking.oerders-history');
+
 
 /* AUTH ACTION */
 Route::post('/login', [AuthController::class, 'login']);
