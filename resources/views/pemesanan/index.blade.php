@@ -4,11 +4,11 @@
     <div id="booking-list" class=" bg-[#dfe6db] max-w-7xl mx-auto py-6 px-4">
 
 
-        <!-- HEADER -->
+        <!-- heder -->
         <div class="mb-10">
-            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">
+            <h2 class="text-4xl italic font-semibold font-serif text-teal-900 text-center mb-4">
                 Booking Information
-            </h1>
+                </h1>
         </div>
 
 
@@ -89,8 +89,7 @@
                 </select>
 
                 <!-- button -->
-                <button
-                    class="bg-[#619b76] hover:bg-[#4a7a5d] text-white
+                <button class="bg-[#508162] hover:bg-[#4a7a5d] text-white
                rounded-xl font-semibold py-2">
                     Apply
                 </button>
@@ -99,19 +98,20 @@
 
         </div>
 
-        <!-- TABLE -->
+        <!-- table -->
         <div class="bg-white rounded-xl shadow overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-gray-100 text-slate-600">
+                <thead class="bg-[#6bbb97d7] text-slate-700">
                     <tr>
                         <th class="px-4 py-3 text-left">ID</th>
                         <th class="px-4 py-3 text-left">User</th>
-                        <th class="px-4 py-3 text-left">Lapangan</th>
-                        <th class="px-4 py-3 text-left">Tanggal & Jam</th>
-                        <th class="px-4 py-3 text-left">Total</th>
+                        <th class="px-4 py-3 text-left">Court</th>
+                        <th class="px-4 py-3 text-left">Date</th>
+                        <th class="px-4 py-3 text-left">Time</th>
+                        <th class="px-4 py-3 text-left">Amount</th>
                         <th class="px-4 py-3 text-left">Status</th>
-                        <th class="px-4 py-3 text-left">Pembayaran</th>
-                        <th class="px-4 py-3 text-left">Aksi</th>
+                        <th class="px-4 py-3 text-left">Payment</th>
+                        <th class="px-4 py-3 text-left">Action</th>
                     </tr>
                 </thead>
 
@@ -131,7 +131,9 @@
                             </div>
                         </td>
                         <td class="px-4 py-3">
-                            21 Dec 2025<br>
+                            21 Dec 2025
+                        </td>
+                        <td class="px-4 py-3">
                             18:00 - 19:00
                         </td>
                         <td class="px-4 py-3">Rp 150.000</td>

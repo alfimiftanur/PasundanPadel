@@ -3,12 +3,14 @@
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
             <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900">Admin's Panel</h1>
-                <p class="text-gray-500 mt-1">Kelola sistem PasundanPadel</p>
+                <h2 class="text-4xl italic font-semibold font-serif text-teal-900 text-center mb-2">
+                Admin's Panel
+            </h2>
+                <p class="text-teal-900 text-center mt-1">“All set! Thanks for keeping things running smoothly.”</p>
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 mb-2">
                 <!-- Total Lapangan -->
                 <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                     <div class="flex justify-between items-start">
