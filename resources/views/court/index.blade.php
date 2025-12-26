@@ -4,14 +4,18 @@
         Pasundan Padel – Court List
     </x-slot:title>
 
-    <section id="courtlist" class="bg-amber-50 min-h-screen" x-data="{ openFilter: false }">
+    <section id="courtlist" class="bg-amber-50 min-h-screen" x-data="{ openFilter: window.innerWidth >= 768 }"
+        @resize.window="openFilter = window.innerWidth >= 768">
+
 
         <div class="max-w-7xl mx-auto px-6 py-12">
 
             <!-- Page Title -->
-            <h1 class="text-3xl text-center md:text-4xl font-bold text-slate-900 mb-10">
-                Our Padel Courts
-            </h1>
+            <h4
+                class="relative italic font-serif text-teal-900 text-5xl text-center mb-20
+                     after:content-[''] after:block after:w-[320px] after:h-[2px] after:bg-teal-700 after:mx-auto after:mt-4">
+                Courts
+            </h4>
 
             <!-- Mobile Filter Button -->
             <div class="md:hidden mb-6">
@@ -22,8 +26,7 @@
                 </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 min-h-[calc(100vh-160px)]"
-                 x-data="courtFilter()">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 min-h-[calc(100vh-160px)]" x-data="courtFilter()">
 
                 {{-- Filter Sidebar --}}
                 <aside x-show="openFilter || window.innerWidth >= 768" x-transition @click.outside="openFilter = false"
@@ -40,9 +43,7 @@
 
                         <!-- Input -->
                         <div class="relative">
-                            <input type="text" 
-                                x-model="filters.keyword" 
-                                @input="handleSearch()"
+                            <input type="text" x-model="filters.keyword" @input="handleSearch()"
                                 placeholder="Court name or price..."
                                 class="w-full px-4 py-2 pl-11 rounded-xl bg-white text-slate-900 focus:outline-none 
                                 focus:ring-2 focus:ring-teal-400" />
@@ -59,17 +60,17 @@
                             <div x-show="showSearchResults && searchResults.length > 0" x-transition
                                 class="absolute mt-2 w-full bg-white rounded-xl shadow-lg overflow-hidden z-30 max-h-64 overflow-y-auto">
                                 <template x-for="court in searchResults" :key="court.id">
-                                    <div @click="selectCourt(court)" 
+                                    <div @click="selectCourt(court)"
                                         class="px-4 py-2 text-black text-sm hover:bg-slate-100 cursor-pointer border-b border-slate-100 last:border-b-0">
                                         <p class="font-semibold" x-text="court.nama_lapangan"></p>
                                         <p class="text-xs text-slate-500" x-text="court.lokasi"></p>
                                     </div>
                                 </template>
                             </div>
-                            
+
                             <!-- No Results -->
-                            <div x-show="showSearchResults && searchResults.length === 0 && filters.keyword.length > 0" x-transition
-                                class="absolute mt-2 w-full bg-white rounded-xl shadow-lg z-30">
+                            <div x-show="showSearchResults && searchResults.length === 0 && filters.keyword.length > 0"
+                                x-transition class="absolute mt-2 w-full bg-white rounded-xl shadow-lg z-30">
                                 <div class="px-4 py-3 text-black text-sm text-center text-slate-500">
                                     No courts found
                                 </div>
@@ -119,12 +120,12 @@
                         </label>
                         <div class="space-y-2">
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" x-model="filters.tipe" value="Indoor" 
+                                <input type="checkbox" x-model="filters.tipe" value="Indoor"
                                     class="accent-teal-400 w-4 h-4">
                                 <span>Indoor</span>
                             </label>
                             <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" x-model="filters.tipe" value="Outdoor" 
+                                <input type="checkbox" x-model="filters.tipe" value="Outdoor"
                                     class="accent-teal-400 w-4 h-4">
                                 <span>Outdoor</span>
                             </label>
@@ -158,8 +159,7 @@
                 {{-- Court List --}}
                 <div class="md:col-span-3">
 
-                    <div
-                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8
                                max-h-[calc(100vh-200px)] overflow-y-auto pr-2"
                         id="courtContainer">
 
@@ -168,8 +168,7 @@
                                 data-court-id="{{ $lapangan->id }}"
                                 data-name="{{ strtolower($lapangan->nama_lapangan) }}"
                                 data-location="{{ strtolower($lapangan->lokasi ?? '') }}"
-                                data-type="{{ $lapangan->tipe_lapangan }}"
-                                data-price="{{ $lapangan->harga_per_jam }}">
+                                data-type="{{ $lapangan->tipe_lapangan }}" data-price="{{ $lapangan->harga_per_jam }}">
 
                                 <!-- Image -->
                                 <div class="h-52 bg-slate-200 overflow-hidden">
@@ -266,7 +265,7 @@
                 async handleSearch() {
                     if (this.filters.keyword.length > 0) {
                         const keyword = this.filters.keyword.toLowerCase();
-                        this.searchResults = this.allCourts.filter(court => 
+                        this.searchResults = this.allCourts.filter(court =>
                             court.nama_lapangan.toLowerCase().includes(keyword) ||
                             court.lokasi.toLowerCase().includes(keyword) ||
                             court.deskripsi.toLowerCase().includes(keyword)
@@ -287,11 +286,11 @@
                 applyFilters() {
                     // Build query parameters
                     const params = new URLSearchParams();
-                    
+
                     if (this.filters.keyword) params.append('keyword', this.filters.keyword);
                     if (this.filters.min_price) params.append('min_price', this.filters.min_price);
                     if (this.filters.max_price) params.append('max_price', this.filters.max_price);
-                    
+
                     // For multiple types
                     if (this.filters.tipe.length > 0) {
                         this.filters.tipe.forEach(type => params.append('tipe[]', type));
@@ -299,22 +298,22 @@
 
                     // Fetch filtered results
                     fetch(`{{ route('court.index') }}?${params.toString()}`, {
-                        headers: {
-                            'Accept': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        this.updateCourtList(data.courts);
-                        this.totalResults = data.total;
-                    })
-                    .catch(error => console.error('Filter error:', error));
+                            headers: {
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            this.updateCourtList(data.courts);
+                            this.totalResults = data.total;
+                        })
+                        .catch(error => console.error('Filter error:', error));
                 },
 
                 updateCourtList(courts) {
                     const container = document.getElementById('courtContainer');
-                    
+
                     if (courts.length === 0) {
                         container.innerHTML = `
                             <div class="col-span-3 text-center py-12">
@@ -362,15 +361,17 @@
                     this.searchResults = [];
                     this.showSearchResults = false;
                     this.totalResults = this.allCourts.length;
-                    
+
                     // Reset court list to show all
-                    fetch('{{ route("court.index") }}', {
-                        headers: { 'Accept': 'application/json' }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        this.updateCourtList(data.courts);
-                    });
+                    fetch('{{ route('court.index') }}', {
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            this.updateCourtList(data.courts);
+                        });
                 }
             }
         }
