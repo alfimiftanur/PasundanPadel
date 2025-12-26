@@ -10,8 +10,6 @@ Route::get('/', [LapanganController::class, 'indexHome'])->name('home');
 
 Route::get('/court', [LapanganController::class, 'indexPublic'])->name('court.index');
 
-Route::get('/court/{id}', [LapanganController::class, 'showPublic'])->name('court.detail');
-
 Route::get('/schedule', [JadwalController::class, 'indexPublic'])->name('user.schedule');
 
 
@@ -25,6 +23,11 @@ Route::get('/register', function () {
     return redirect()->to(url()->previous() ?: '/')
         ->with('showRegister', true);
 })->name('register');
+
+// Court Detail View
+Route::get('/court/{id}', function ($id) {
+    return view('court.detail');
+})->name('court.detail');
 
 // Booking Creation View
 Route::get('/booking/{court}', function ($court) {
