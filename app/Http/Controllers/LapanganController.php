@@ -26,6 +26,17 @@ class LapanganController extends Controller
     }
 
     /**
+     * Display lapangan detail untuk user (public view)
+     */
+    public function showPublic($id)
+    {
+        // Ambil data lapangan berdasarkan ID
+        $lapangan = Lapangan::findOrFail($id);
+        
+        return view('court.detail', compact('lapangan'));
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
