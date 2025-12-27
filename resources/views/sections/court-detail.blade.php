@@ -8,24 +8,36 @@
             {{-- Breadcrumb --}}
             <nav class="text-sm text-slate-500">
                 <a href="/" class="hover:text-teal-600">Beranda</a> /
-                <a href="/court" class="hover:text-teal-600">Lapangan</a> /
-                <span class="text-slate-700 font-medium">Padel Arena Jakarta</span>
+                <a href="{{ route('court.index') }}" class="hover:text-teal-600">Lapangan</a> /
+                <span class="text-slate-700 font-medium">{{ $lapangan->nama_lapangan }}</span>
             </nav>
 
             {{-- Image --}}
             <div class="rounded-3xl overflow-hidden shadow">
-                <img src="https://images.unsplash.com/photo-1622668460389-f92e9ed21616?q=80&w=1200"
-                     alt="Padel Arena Jakarta"
-                     class="w-full h-[420px] object-cover">
+                @if($lapangan->foto)
+                    <img src="{{ asset('storage/' . $lapangan->foto) }}"
+                         alt="{{ $lapangan->nama_lapangan }}"
+                         class="w-full h-[420px] object-cover">
+                @else
+                    <img src="https://images.unsplash.com/photo-1622668460389-f92e9ed21616?q=80&w=1200"
+                         alt="{{ $lapangan->nama_lapangan }}"
+                         class="w-full h-[420px] object-cover">
+                @endif
             </div>
 
             {{-- Title & Rating --}}
             <div class="flex items-start justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-slate-900">Padel Arena Jakarta</h1>
+                    <h1 class="text-3xl font-bold text-slate-900">{{ $lapangan->nama_lapangan }}</h1>
                     <p class="text-slate-500 mt-1 flex items-center gap-2">
-                        <span>📍 Jakarta Selatan</span>
-                        <span class="px-2 py-0.5 bg-teal-100 text-teal-700 rounded-full text-xs">Indoor</span>
+                        <span>📍 {{ $lapangan->lokasi }}</span>
+                        <span class="px-2 py-0.5 
+                            @if($lapangan->tipe_lapangan === 'Indoor') bg-teal-100 text-teal-700 
+                            @else bg-emerald-100 text-emerald-700 
+                            @endif 
+                            rounded-full text-xs">
+                            {{ $lapangan->tipe_lapangan }}
+                        </span>
                     </p>
                 </div>
                 <div class="text-right">
@@ -40,8 +52,7 @@
             <div class="bg-white rounded-2xl p-6 shadow-sm">
                 <h2 class="font-semibold text-lg mb-2">Deskripsi</h2>
                 <p class="text-slate-600 leading-relaxed">
-                    Lapangan padel indoor berkualitas tinggi dengan sistem pencahayaan modern
-                    dan permukaan lantai profesional. Cocok untuk pemula hingga atlet profesional.
+                    {{ $lapangan->deskripsi }}
                 </p>
             </div>
 
@@ -91,7 +102,9 @@
             {{-- Price Card --}}
             <div class="bg-white rounded-3xl p-6 shadow-lg sticky top-24">
                 <div class="text-center">
-                    <p class="text-3xl font-bold text-teal-600">Rp 150.000</p>
+                    <p class="text-3xl font-bold text-teal-600">
+                        Rp {{ number_format($lapangan->harga_per_jam, 0, ',', '.') }}
+                    </p>
                     <p class="text-slate-500">per jam</p>
                 </div>
 
@@ -107,13 +120,13 @@
 
                 {{-- Buttons --}}
                 <div class="mt-6 space-y-3">
-                    <a href="{{ route('booking.create', 1) }}"
+                    <a href="{{ route('booking.create', $lapangan->id) }}"
                        class="block text-center bg-teal-600 hover:bg-teal-500
                               text-white py-3 rounded-full font-semibold transition">
                         Booking Sekarang
                     </a>
 
-                    <a href="#"
+                    <a href="{{ route('user.schedule') }}?court_id={{ $lapangan->id }}&date={{ now()->format('Y-m-d') }}"
                        class="block text-center border border-teal-600
                               text-teal-600 py-3 rounded-full font-semibold hover:bg-teal-50 transition">
                         Lihat Jadwal Lengkap
