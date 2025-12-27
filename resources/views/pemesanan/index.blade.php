@@ -16,27 +16,27 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 mb-2">
             <div class="bg-white p-5 rounded-xl shadow">
                 <p class="text-sm text-slate-500">Total Booking</p>
-                <p class="text-2xl font-bold">11</p>
+                <p class="text-2xl font-bold">{{ $stats['total'] }}</p>
             </div>
 
             <div class="bg-white p-5 rounded-xl shadow">
                 <p class="text-sm text-slate-500">Pending</p>
-                <p class="text-2xl font-bold text-yellow-500">2</p>
+                <p class="text-2xl font-bold text-yellow-500">{{ $stats['pending'] }}</p>
             </div>
 
             <div class="bg-white p-5 rounded-xl shadow">
                 <p class="text-sm text-slate-500">Confirmed</p>
-                <p class="text-2xl font-bold text-green-600">6</p>
+                <p class="text-2xl font-bold text-green-600">{{ $stats['confirmed'] }}</p>
             </div>
 
             <div class="bg-white p-5 rounded-xl shadow">
                 <p class="text-sm text-slate-500">Cancelled</p>
-                <p class="text-2xl font-bold text-red-600">3</p>
+                <p class="text-2xl font-bold text-red-600">{{ $stats['cancelled'] }}</p>
             </div>
 
             <div class="bg-white p-5 rounded-xl shadow">
-                <p class="text-sm text-slate-500">Waiting</p>
-                <p class="text-2xl font-bold text-blue-500">2</p>
+                <p class="text-sm text-slate-500">Completed</p>
+                <p class="text-2xl font-bold text-blue-500">{{ $stats['completed'] }}</p>
             </div>
         </div>
 
@@ -56,6 +56,7 @@
                     </svg>
                     <!-- input -->
                     <input type="text" name="search" placeholder="Cari berdasarkan user atau lapangan"
+                        value="{{ request('search') }}"
                         class="w-full border border-slate-200 rounded-xl
                    pl-11 pr-10 py-2
                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -76,16 +77,18 @@
                 <!-- status booking-->
                 <select name="status_booking" class="border border-slate-200 rounded-xl px-4 py-2">
                     <option value="">All Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="confirmed">Confirmed</option>
-                    <option value="cancelled">Cancelled</option>
+                    <option value="pending" {{ request('status_booking') === 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="confirmed" {{ request('status_booking') === 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                    <option value="cancelled" {{ request('status_booking') === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                    <option value="completed" {{ request('status_booking') === 'completed' ? 'selected' : '' }}>Completed</option>
                 </select>
 
                 <!-- payment status-->
                 <select name="status_pembayaran" class="border border-slate-200 rounded-xl px-4 py-2">
                     <option value="">All Payment Status</option>
-                    <option value="paid">Paid</option>
-                    <option value="unpaid">Unpaid</option>
+                    <option value="paid" {{ request('status_pembayaran') === 'paid' ? 'selected' : '' }}>Paid</option>
+                    <option value="unpaid" {{ request('status_pembayaran') === 'unpaid' ? 'selected' : '' }}>Unpaid</option>
+                    <option value="pending" {{ request('status_pembayaran') === 'pending' ? 'selected' : '' }}>Pending</option>
                 </select>
 
                 <!-- button -->
@@ -97,6 +100,12 @@
 
 
         </div>
+        <!-- Alert Success -->
+        @if(session('success'))
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <!-- table -->
         <div class="bg-white rounded-xl shadow overflow-x-auto">
@@ -116,43 +125,75 @@
                 </thead>
 
                 <tbody class="divide-y">
-                    <tr>
-                        <td class="px-4 py-3">#11</td>
-                        <td class="px-4 py-3">
-                            <div class="font-semibold">User Demo</div>
-                            <div class="text-xs text-slate-500">
-                                user@padelcourt.com
-                            </div>
-                        </td>
-                        <td class="px-4 py-3">
-                            <div class="font-semibold">Padel court A</div>
-                            <div class="text-xs text-slate-500">
-                                lt.1 hall A
-                            </div>
-                        </td>
-                        <td class="px-4 py-3">
-                            21 Dec 2025
-                        </td>
-                        <td class="px-4 py-3">
-                            18:00 - 19:00
-                        </td>
-                        <td class="px-4 py-3">Rp 150.000</td>
-                        <td class="px-4 py-3">
-                            <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">
-                                Confirmed
-                            </span>
-                        </td>
-                        <td class="px-4 py-3">
-                            <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">
-                                Paid
-                            </span>
-                        </td>
-                        <td class="px-4 py-3 font-semibold">
-                            <a href="/detail-booking" class="text-blue-600 hover:underline">
-                                Detail
-                            </a>
-                        </td>
-                    </tr>
+                    @forelse($pemesanans as $pemesanan)
+                        <tr>
+                            <td class="px-4 py-3">#{{ $pemesanan->id }}</td>
+                            <td class="px-4 py-3">
+                                <div class="font-semibold">{{ $pemesanan->customer_name }}</div>
+                                <div class="text-xs text-slate-500">
+                                    {{ $pemesanan->customer_email }}
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="font-semibold">{{ $pemesanan->lapangan->nama_lapangan }}</div>
+                                <div class="text-xs text-slate-500">
+                                    {{ $pemesanan->lapangan->lokasi ?? '-' }}
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                {{ \Carbon\Carbon::parse($pemesanan->jadwal->date)->format('d M Y') }}
+                            </td>
+                            <td class="px-4 py-3">
+                                {{ $pemesanan->jadwal->start_time }} - {{ $pemesanan->jadwal->end_time }}
+                            </td>
+                            <td class="px-4 py-3">Rp {{ number_format($pemesanan->total_price, 0, ',', '.') }}</td>
+                            <td class="px-4 py-3">
+                                @if($pemesanan->status === 'pending')
+                                    <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
+                                        Pending
+                                    </span>
+                                @elseif($pemesanan->status === 'confirmed')
+                                    <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">
+                                        Confirmed
+                                    </span>
+                                @elseif($pemesanan->status === 'cancelled')
+                                    <span class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700">
+                                        Cancelled
+                                    </span>
+                                @elseif($pemesanan->status === 'completed')
+                                    <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-700">
+                                        Completed
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="px-4 py-3">
+                                @if($pemesanan->payment_status === 'paid')
+                                    <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">
+                                        Paid
+                                    </span>
+                                @elseif($pemesanan->payment_status === 'pending')
+                                    <span class="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700">
+                                        Pending
+                                    </span>
+                                @elseif($pemesanan->payment_status === 'unpaid')
+                                    <span class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700">
+                                        Unpaid
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="px-4 py-3 font-semibold">
+                                <a href="{{ route('pemesanan.show', $pemesanan->id) }}" class="text-blue-600 hover:underline">
+                                    Detail
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="9" class="px-4 py-8 text-center text-slate-500">
+                                Tidak ada data booking
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
