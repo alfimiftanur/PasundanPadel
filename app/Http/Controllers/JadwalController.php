@@ -57,8 +57,8 @@ class JadwalController extends Controller
         $selectedCourtId = $request->get('court_id');
 
         $lapangans = Lapangan::where('status', 'tersedia')
-        ->orderBy('nama_lapangan')
-        ->get();
+            ->orderBy('nama_lapangan')
+            ->get();
 
         $displayedLapangans = $selectedCourtId
             ? Lapangan::where('id', $selectedCourtId)->get()
@@ -92,7 +92,7 @@ class JadwalController extends Controller
     public function edit(Request $request)
     {
         $lapangans = Lapangan::all();
-        
+
         // Cek apakah edit mode (ada jadwal_id)
         $jadwalId = $request->get('jadwal_id');
         $existingJadwal = null;
@@ -100,17 +100,17 @@ class JadwalController extends Controller
         if ($jadwalId) {
             $existingJadwal = Jadwal::find($jadwalId);
         }
-        
+
         // Auto-fill dari kalender
         $prefilledData = [
             'court_id' => $request->get('court_id'),
             'date' => $request->get('date'),
             'start_time' => $request->get('start_time'),
-            'end_time' => $request->get('start_time') 
-                ? \Carbon\Carbon::parse($request->get('start_time'))->addHour()->format('H:i') 
+            'end_time' => $request->get('start_time')
+                ? \Carbon\Carbon::parse($request->get('start_time'))->addHour()->format('H:i')
                 : null,
         ];
-        
+
         return view('jadwal.edit', compact('lapangans', 'prefilledData', 'existingJadwal'));
     }
 
@@ -122,19 +122,39 @@ class JadwalController extends Controller
             'date' => 'required|date',
             'start_time' => 'required',
             'end_time' => 'required',
-            'status' => 'required|in:tersedia,terboking'
+            'status' => 'required|in:tersedia,pending,terboking' // Tambah pending
         ]);
+
+        // Validasi tanggal tidak boleh kurang dari hari ini
+        $selectedDate = \Carbon\Carbon::parse($request->date)->startOfDay();
+        $today = \Carbon\Carbon::today();
+
+        if ($selectedDate->lt($today)) {
+            return back()->withErrors([
+                'date' => 'Tanggal jadwal tidak boleh kurang dari hari ini.'
+            ])->withInput();
+        }
+
+        // Validasi waktu tidak boleh sudah lewat (untuk hari ini)
+        $jadwalDateTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time);
+        $now = \Carbon\Carbon::now();
+
+        if ($jadwalDateTime->lte($now)) {
+            return back()->withErrors([
+                'start_time' => 'Waktu jadwal sudah lewat. Silakan pilih waktu yang akan datang.'
+            ])->withInput();
+        }
 
         // Validasi bentrok
         $bentrok = Jadwal::where('court_id', $request->court_id)
             ->where('date', $request->date)
             ->where(function($query) use ($request) {
                 $query->whereBetween('start_time', [$request->start_time, $request->end_time])
-                      ->orWhereBetween('end_time', [$request->start_time, $request->end_time])
-                      ->orWhere(function($q) use ($request) {
-                          $q->where('start_time', '<=', $request->start_time)
-                            ->where('end_time', '>=', $request->end_time);
-                      });
+                    ->orWhereBetween('end_time', [$request->start_time, $request->end_time])
+                    ->orWhere(function($q) use ($request) {
+                        $q->where('start_time', '<=', $request->start_time)
+                          ->where('end_time', '>=', $request->end_time);
+                    });
             })
             ->exists();
 
@@ -143,7 +163,7 @@ class JadwalController extends Controller
         }
 
         Jadwal::create($validated);
-        
+
         return redirect()
             ->route('jadwal.index', ['date' => $request->date])
             ->with('success', 'Jadwal berhasil ditambahkan!');
@@ -153,10 +173,20 @@ class JadwalController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $jadwal = Jadwal::findOrFail($id);
-        
+
         $request->validate([
-            'status' => 'required|in:tersedia,terboking'
+            'status' => 'required|in:tersedia,pending,terboking'
         ]);
+
+        // Validasi: Tidak boleh mengubah jadwal yang sudah lewat
+        $jadwalDateTime = \Carbon\Carbon::parse($jadwal->date . ' ' . $jadwal->start_time);
+        $now = \Carbon\Carbon::now();
+
+        if ($jadwalDateTime->lte($now)) {
+            return back()->withErrors([
+                'error' => 'Tidak bisa mengubah status jadwal yang sudah lewat.'
+            ]);
+        }
 
         $jadwal->update([
             'status' => $request->status
@@ -166,12 +196,16 @@ class JadwalController extends Controller
             ->route('jadwal.index', ['date' => $jadwal->date->format('Y-m-d')])
             ->with('success', 'Status berhasil diperbarui!');
     }
-
+    
 
     public function destroy(Jadwal $jadwal)
     {
+        $jadwal->delete();
         
+        return redirect()
+            ->route('jadwal.index')
+            ->with('success', 'Jadwal berhasil dihapus!');
     }
-    
 
+    
 }
