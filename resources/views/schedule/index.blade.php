@@ -81,6 +81,10 @@
                     <span class="text-sm text-gray-700">Tersedia</span>
                 </div>
                 <div class="flex items-center">
+                    <div class="w-4 h-4 bg-yellow-500 rounded mr-2"></div>
+                    <span class="text-sm text-gray-700">Pending</span>
+                </div>
+                <div class="flex items-center">
                     <div class="w-4 h-4 bg-red-500 rounded mr-2"></div>
                     <span class="text-sm text-gray-700">Terboking</span>
                 </div>
@@ -120,7 +124,7 @@
                                         if (isset($jadwals[$lapangan->id])) {
                                             foreach ($jadwals[$lapangan->id] as $jadwal) {
                                                 $startTime = \Carbon\Carbon::parse($jadwal->start_time)->format('H:i');
-
+                                                
                                                 if ($startTime === $timeSlot) {
                                                     $jadwalForSlot = $jadwal;
                                                     $status = $jadwal->status;
@@ -133,27 +137,35 @@
                                             $bgColor = 'bg-red-100';
                                             $textColor = 'text-red-800';
                                             $statusText = 'Terboking';
-                                            $hoverBg = 'hover:bg-red-200';
+                                            $hoverBg = '';
+                                            $clickable = false;
+                                        } elseif ($status === 'pending') {
+                                            $bgColor = 'bg-yellow-100';
+                                            $textColor = 'text-yellow-800';
+                                            $statusText = 'Pending';
+                                            $hoverBg = '';
+                                            $clickable = false;
                                         } else {
                                             $bgColor = 'bg-green-100';
                                             $textColor = 'text-green-800';
                                             $statusText = 'Tersedia';
                                             $hoverBg = 'hover:bg-green-200';
+                                            $clickable = true;
                                         }
                                     @endphp
 
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($status === 'terboking')
-                                            {{-- Sudah dibooking: tidak bisa diklik --}}
+                                        @if($clickable)
+                                            <!-- Tersedia: klik untuk booking -->
+                                            <a href="{{ route('booking.create', $lapangan->id) }}?date={{ $selectedDate }}&start_time={{ $timeSlot }}" 
+                                            class="block w-full px-4 py-2 {{ $bgColor }} {{ $textColor }} rounded-lg text-sm font-semibold text-center {{ $hoverBg }} transition duration-200 cursor-pointer">
+                                                {{ $statusText }}
+                                            </a>
+                                        @else
+                                            <!-- Pending atau Terboking: tidak bisa diklik -->
                                             <div class="block w-full px-4 py-2 {{ $bgColor }} {{ $textColor }} rounded-lg text-sm font-semibold text-center">
                                                 {{ $statusText }}
                                             </div>
-                                        @else
-                                            {{-- Tersedia: klik untuk booking --}}
-                                            <a href="{{ route('booking.create', $lapangan->id) }}?date={{ $selectedDate }}&start_time={{ $timeSlot }}"
-                                               class="block w-full px-4 py-2 {{ $bgColor }} {{ $textColor }} rounded-lg text-sm font-semibold text-center {{ $hoverBg }} transition duration-200 cursor-pointer">
-                                                {{ $statusText }}
-                                            </a>
                                         @endif
                                     </td>
                                 @endforeach

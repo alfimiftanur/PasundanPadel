@@ -14,15 +14,17 @@ return new class extends Migration
             $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
-            $table->enum('status', ['tersedia', 'terboking'])->default('tersedia');
+            $table->enum('status', ['tersedia', 'pending', 'terboking'])->default('tersedia');
             $table->timestamps();
 
             $table->foreign('court_id')
-                  ->references('id')
-                  ->on('lapangans')
-                  ->onDelete('cascade');
-            
+                ->references('id')
+                ->on('lapangans')
+                ->onDelete('cascade');
+
             $table->index(['court_id', 'date']);
+            
+            $table->unique(['court_id', 'date', 'start_time', 'end_time'], 'unique_jadwal_booking');
         });
     }
 

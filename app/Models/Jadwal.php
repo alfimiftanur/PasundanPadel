@@ -28,4 +28,9 @@ class Jadwal extends Model
     {
         return $this->belongsTo(Lapangan::class, 'court_id');
     }
+
+    public function pemesanan()
+    {
+        return $this->hasOne(Pemesanan::class);
+    }
 }
