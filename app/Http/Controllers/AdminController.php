@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lapangan;
 use Illuminate\Http\Request;
+use App\Models\Pemesanan;
 
 class AdminController extends Controller
 {
@@ -11,13 +12,17 @@ class AdminController extends Controller
         $lapangans = Lapangan::all();
         $totalCourts = Lapangan::count();
         $totalUsers = \App\Models\User::count();
-        $totalBookings = 1;
-        $pendingBookings = 0;
-        $confirmedBookings = 0;
-        $cancelledBookings = 0;
+        $totalBookings = Pemesanan::count();
+        $pendingBookings = Pemesanan::where('status', 'pending')->count();
+        $confirmedBookings = Pemesanan::where('status', 'confirmed')->count();
+        $cancelledBookings = Pemesanan::where('status', 'cancelled')->count();
         $revenue = 'Rp 0';
         $todayRevenue = 0;
         $monthRevenue = 0;
+        $recentBookings = Pemesanan::with(['lapangan', 'jadwal'])
+            ->latest()
+            ->take(5)
+            ->get();
 
         return view('dashboard.admin-dashboard', compact(
             'lapangans',
@@ -29,7 +34,8 @@ class AdminController extends Controller
             'cancelledBookings',
             'revenue',
             'todayRevenue',
-            'monthRevenue'
+            'monthRevenue',
+            'recentBookings'
         ));
     }
 }

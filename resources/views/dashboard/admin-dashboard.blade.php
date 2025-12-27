@@ -118,7 +118,7 @@
                 </a>
 
                 <!-- Kelola Booking -->
-                <a href="/booking-list"
+                <a href="{{ route('pemesanan.index') }}"
                     class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
                     <div class="bg-green-50 p-3 rounded-xl">
                         <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,7 +161,7 @@
                     </div>
                     <div>
                         <p class="font-semibold text-gray-900">Export PDF</p>
-                        
+
                     </div>
                 </a>
             </div>
@@ -171,7 +171,7 @@
                 <div class="flex justify-between items-center p-6 border-b border-gray-100">
                     <h2 class="text-xl font-semibold text-gray-900">Recent Bookings</h2>
     {{-- nanti href ini diisi ke pemesanan>>index --}}
-                    <a href="#" class="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1">
+                    <a href="{{ route('pemesanan.index') }}" class="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1">
                         Lihat Semua
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
@@ -200,64 +200,49 @@
                                     <td class="px-6 py-4">
                                         <div>
                                             <p class="text-gray-900 font-medium">
-                                                {{ $booking->user->name ?? 'User Demo' }}</p>
+                                                {{ $booking->customer_name }}</p>
                                             <p class="text-gray-400 text-sm">
-                                                {{ $booking->user->email ?? 'user@padelcourt.com' }}</p>
+                                                {{ $booking->customer_email }}</p>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 text-gray-900">
-                                        {{ $booking->court->name ?? 'Grand Padel Club' }}</td>
+                                        {{ $booking->lapangan->nama_lapangan }}</td>
                                     <td class="px-6 py-4">
-                                        <p class="text-gray-900">{{ $booking->date ?? '17 Dec 2025' }}</p>
-                                        <p class="text-gray-400 text-sm">{{ $booking->time ?? '18:00 - 19:00' }}</p>
+                                        <p class="text-gray-900">{{ \Carbon\Carbon::parse($booking->jadwal->date)->format('d M Y') }}</p>
+                                        <p class="text-gray-400 text-sm">{{ $booking->jadwal->start_time }} - {{ $booking->jadwal->end_time }}</p>
                                     </td>
                                     <td class="px-6 py-4 text-gray-900">Rp
-                                        {{ number_format($booking->price ?? 120000, 0, ',', '.') }}</td>
+                                        {{ number_format($booking->total_price, 0, ',', '.') }}</td>
                                     <td class="px-6 py-4">
-                                        @if (($booking->status ?? 'cancelled') == 'confirmed')
+                                        @if ($booking->status == 'confirmed')
                                             <span class="text-green-500">Confirmed</span>
-                                        @elseif(($booking->status ?? 'cancelled') == 'pending')
+                                        @elseif($booking->status == 'pending')
                                             <span class="text-yellow-500">Pending</span>
+                                        @elseif($booking->status == 'completed')
+                                            <span class="text-blue-500">Completed</span>
                                         @else
                                             <span class="text-red-500">Cancelled</span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
-                                        @if (($booking->payment_status ?? 'rejected') == 'paid')
+                                        @if ($booking->payment_status == 'paid')
                                             <span class="text-green-500">Paid</span>
-                                        @elseif(($booking->payment_status ?? 'rejected') == 'pending')
+                                        @elseif($booking->payment_status == 'pending')
                                             <span class="text-yellow-500">Pending</span>
+                                        @elseif($booking->payment_status == 'failed')
+                                            <span class="text-red-500">Failed</span>
                                         @else
-                                            <span class="text-red-500">Rejected</span>
+                                            <span class="text-gray-500">Unpaid</span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
-                                        <a href="#" class="text-gray-600 hover:text-gray-900">Detail</a>
+                                        <a href="{{ route('pemesanan.show', $booking->id) }}" class="text-gray-600 hover:text-gray-900">Detail</a>
                                     </td>
                                 </tr>
                             @empty
                                 <tr class="border-b border-gray-50">
-                                    <td class="px-6 py-4 text-gray-900">#1</td>
-                                    <td class="px-6 py-4">
-                                        <div>
-                                            <p class="text-gray-900 font-medium">User Demo</p>
-                                            <p class="text-gray-400 text-sm">user@padelcourt.com</p>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-900">Grand Padel Club</td>
-                                    <td class="px-6 py-4">
-                                        <p class="text-gray-900">17 Dec 2025</p>
-                                        <p class="text-gray-400 text-sm">18:00 - 19:00</p>
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-900">Rp 120.000</td>
-                                    <td class="px-6 py-4">
-                                        <span class="text-red-500">Cancelled</span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span class="text-red-500">Rejected</span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <a href="#" class="text-gray-600 hover:text-gray-900">Detail</a>
+                                    <td colspan="8" class="px-6 py-8 text-center text-gray-500">
+                                        Belum ada booking
                                     </td>
                                 </tr>
                             @endforelse

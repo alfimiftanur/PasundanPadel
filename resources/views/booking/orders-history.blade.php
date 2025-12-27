@@ -44,6 +44,12 @@
 
         </div>
 
+        <!-- Alert Success -->
+        @if(session('success'))
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded mb-6">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <!-- table -->
         <div class="bg-white rounded-xl border shadow-sm overflow-x-auto">
@@ -62,104 +68,54 @@
 
                 <tbody class="divide-y">
 
-                    <!-- 1 -->
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 font-medium text-teal-600">
-                            001
-                        </td>
-                        <td class="px-6 py-4">2025-07-20</td>
-                        <td class="px-6 py-4">18:00 - 19:00</td>
-                        <td class="px-6 py-4">Court A</td>
-                        <td class="px-6 py-4 text-yellow-600 font-medium">
-                            Upcoming
-                        </td>
-                        <td class="px-6 py-4">Rp500.000</td>
-                        <td class="px-6 py-4 text-center">
-                            <div x-data="{ open: false }" class="relative inline-block">
-                                <button @click="open = !open"
-                                    class="p-2 border rounded hover:bg-gray-100 focus:outline-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                                    </svg>
-                                </button>
+                    @forelse($pemesanans as $pemesanan)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 font-medium text-teal-600">
+                                {{ str_pad($pemesanan->id, 3, '0', STR_PAD_LEFT) }}
+                            </td>
+                            <td class="px-6 py-4">{{ \Carbon\Carbon::parse($pemesanan->jadwal->date)->format('Y-m-d') }}</td>
+                            <td class="px-6 py-4">{{ $pemesanan->jadwal->start_time }} - {{ $pemesanan->jadwal->end_time }}</td>
+                            <td class="px-6 py-4">{{ $pemesanan->lapangan->nama_lapangan }}</td>
+                            <td class="px-6 py-4 font-medium
+                                @if($pemesanan->status === 'pending') text-yellow-600
+                                @elseif($pemesanan->status === 'confirmed') text-green-600
+                                @elseif($pemesanan->status === 'completed') text-green-600
+                                @elseif($pemesanan->status === 'cancelled') text-red-600
+                                @endif">
+                                {{ ucfirst($pemesanan->status) }}
+                            </td>
+                            <td class="px-6 py-4">Rp{{ number_format($pemesanan->total_price, 0, ',', '.') }}</td>
+                            <td class="px-6 py-4 text-center">
+                                <div x-data="{ open: false }" class="relative inline-block">
+                                    <button @click="open = !open"
+                                        class="p-2 border rounded hover:bg-gray-100 focus:outline-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                                        </svg>
+                                    </button>
 
-                                <div x-show="open" x-transition @click.outside="open = false"
-                                    class="absolute right-0 mt-2 w-36 bg-white border rounded-lg shadow-lg z-[9999]">
-                                    <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 text-left">
-                                        Export PDF
-                                    </a>
+                                    <div x-show="open" x-transition @click.outside="open = false"
+                                        class="absolute right-0 mt-2 w-36 bg-white border rounded-lg shadow-lg z-[9999]">
+                                        <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 text-left">
+                                            Export PDF
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- 2 -->
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 font-medium text-teal-600">
-                            002
-                        </td>
-                        <td class="px-6 py-4">2025-07-18</td>
-                        <td class="px-6 py-4">10:00 - 11:00</td>
-                        <td class="px-6 py-4">Court C</td>
-                        <td class="px-6 py-4 text-green-600 font-medium">
-                            Completed
-                        </td>
-                        <td class="px-6 py-4">Rp350.000</td>
-                        <td class="px-6 py-4 text-center">
-                            <div x-data="{ open: false }" class="relative inline-block">
-                                <button @click="open = !open"
-                                    class="p-2 border rounded hover:bg-gray-100 focus:outline-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                                    </svg>
-                                </button>
-
-                                <div x-show="open" x-transition @click.outside="open = false"
-                                    class="absolute right-0 mt-2 w-36 bg-white border rounded-lg shadow-lg z-[9999]">
-                                    <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 text-left">
-                                        Export PDF
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- 3 -->
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 font-medium text-teal-600">
-                            003
-                        </td>
-                        <td class="px-6 py-4">2025-07-15</td>
-                        <td class="px-6 py-4">20:00 - 21:00</td>
-                        <td class="px-6 py-4">Court B</td>
-                        <td class="px-6 py-4 text-red-600 font-medium">
-                            Cancelled
-                        </td>
-                        <td class="px-6 py-4">Rp500.000</td>
-                        <td class="px-6 py-4 text-center">
-                            <div x-data="{ open: false }" class="relative inline-block">
-                                <button @click="open = !open"
-                                    class="p-2 border rounded hover:bg-gray-100 focus:outline-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                                    </svg>
-                                </button>
-
-                                <div x-show="open" x-transition @click.outside="open = false"
-                                    class="absolute right-0 mt-2 w-36 bg-white border rounded-lg shadow-lg z-[9999]">
-                                    <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 text-left">
-                                        Export PDF
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+                                <p class="mb-4">Belum ada riwayat booking</p>
+                                <a href="{{ route('user.schedule') }}" 
+                                   class="inline-block bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200">
+                                    Booking Sekarang
+                                </a>
+                            </td>
+                        </tr>
+                    @endforelse
 
                 </tbody>
             </table>
