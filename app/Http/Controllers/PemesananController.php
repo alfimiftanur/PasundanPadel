@@ -11,19 +11,15 @@ use Illuminate\Support\Facades\Storage;
 
 class PemesananController extends Controller
 {
-    /**
-     * Display a listing of the resource (Admin)
-     */
+   
     public function index()
     {
         $title = 'Kelola Booking';
         
-        // Ambil semua pemesanan dengan relasi
         $pemesanans = Pemesanan::with(['user', 'lapangan', 'jadwal'])
             ->latest()
             ->get();
         
-        // Hitung statistik
         $stats = [
             'total' => $pemesanans->count(),
             'pending' => $pemesanans->where('status', 'pending')->count(),
@@ -35,23 +31,18 @@ class PemesananController extends Controller
         return view('pemesanan.index', compact('pemesanans', 'title', 'stats'));
     }
 
-    /**
-     * Show the form for creating a new resource (Public)
-     */
+    
     public function create(Request $request, $courtId)
     {
         $lapangan = Lapangan::findOrFail($courtId);
         
-        // Pre-fill data dari query string (dari schedule)
         $date = $request->get('date', now()->format('Y-m-d'));
         $startTime = $request->get('start_time');
         
         return view('booking.create', compact('lapangan', 'date', 'startTime'));
     }
 
-    /**
-     * Store a newly created resource in storage (Public)
-     */
+   
     public function store(Request $request)
 {
     $request->validate([
@@ -66,7 +57,6 @@ class PemesananController extends Controller
 
     $duration = (int) $request->duration;
 
-    // VALIDASI TANGGAL TIDAK BOLEH KURANG DARI HARI INI
     $selectedDate = \Carbon\Carbon::parse($request->date)->startOfDay();
     $today = today();
 
@@ -74,7 +64,6 @@ class PemesananController extends Controller
         return back()->withErrors(['date' => 'Tanggal booking tidak boleh kurang dari hari ini.'], 'booking')->withInput();
     }
 
-    // VALIDASI WAKTU TIDAK BOLEH SUDAH LEWAT
     $bookingDateTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time);
     $now = now();
 
@@ -82,7 +71,6 @@ class PemesananController extends Controller
         return back()->withErrors(['start_time' => 'Waktu booking sudah lewat. Silakan pilih waktu yang akan datang.'], 'booking')->withInput();
     }
 
-    // VALIDASI MINIMAL BOOKING 1 JAM DARI SEKARANG
     $minimumBookingTime = $now->copy()->addHour();
     if ($bookingDateTime->lt($minimumBookingTime)) {
         return back()->withErrors([
@@ -93,16 +81,13 @@ class PemesananController extends Controller
     $lapangan = Lapangan::findOrFail($request->court_id);
     $totalPrice = $lapangan->harga_per_jam * $duration;
 
-    // ========================================
-    // PERBAIKAN: BUAT JADWAL PER JAM
-    // ========================================
+   
     $jadwalIds = [];
     
     for ($i = 0; $i < $duration; $i++) {
         $startTime = \Carbon\Carbon::parse($request->start_time)->addHours($i)->format('H:i');
         $endTime = \Carbon\Carbon::parse($request->start_time)->addHours($i + 1)->format('H:i');
 
-        // Cari jadwal yang sudah ada
         $jadwal = Jadwal::where('court_id', $request->court_id)
             ->where('date', $request->date)
             ->where('start_time', $startTime)
@@ -110,17 +95,14 @@ class PemesananController extends Controller
             ->first();
 
         if ($jadwal) {
-            // Jadwal sudah ada, cek statusnya
             if (in_array($jadwal->status, ['pending', 'terboking'])) {
                 return back()->withErrors([
                     'start_time' => "Jadwal jam $startTime - $endTime sudah dibooking. Silakan pilih waktu lain."
                 ], 'booking')->withInput();
             }
             
-            // Status tersedia, update jadi pending
             $jadwal->update(['status' => 'pending']);
         } else {
-        // Jadwal belum ada, buat baru dengan try-catch
         try {
             $jadwal = Jadwal::create([
                 'court_id' => $request->court_id,
@@ -143,10 +125,9 @@ class PemesananController extends Controller
         $jadwalIds[] = $jadwal->id;
     }
 
-    // Buat pemesanan dengan jadwal_id pertama (untuk referensi)
     $pemesanan = Pemesanan::create([
         'user_id' => auth()->check() ? auth()->id() : null,
-        'jadwal_id' => $jadwalIds[0], // Jadwal pertama sebagai referensi
+        'jadwal_id' => $jadwalIds[0], 
         'court_id' => $request->court_id,
         'customer_name' => $request->name,
         'customer_email' => $request->email,
@@ -164,14 +145,12 @@ class PemesananController extends Controller
     ]);
 
     return redirect()
-        ->route('booking.success')
-        ->with('pemesanan_id', $pemesanan->id);
+        ->route('pembayaran.checkout', $pemesanan->id)
+        ->with('success', 'Booking berhasil dibuat! Silakan lakukan pembayaran.');
 }
 
 
-    /**
-     * Display the specified resource (Admin & User)
-     */
+ 
     public function show($id)
 {
     $title = 'Detail Booking';
@@ -182,9 +161,7 @@ class PemesananController extends Controller
     return view('pemesanan.show', compact('pemesanan', 'title'));
 }
 
-    /**
-     * Update the specified resource in storage (Admin)
-     */
+    
     public function update(Request $request, Pemesanan $pemesanan)
     {
         $validated = $request->validate([
@@ -192,15 +169,11 @@ class PemesananController extends Controller
             'payment_status' => 'required|in:unpaid,pending,paid,failed',
         ]);
 
-        // Update pemesanan
         $pemesanan->update($validated);
 
-        // Update status jadwal berdasarkan status pemesanan
         if ($validated['status'] === 'confirmed' && $validated['payment_status'] === 'paid') {
-            // Kalau confirmed dan paid, jadwal jadi terboking
             $pemesanan->jadwal->update(['status' => 'terboking']);
         } elseif ($validated['status'] === 'cancelled') {
-            // Kalau cancelled, jadwal jadi tersedia lagi
             $pemesanan->jadwal->update(['status' => 'tersedia']);
         }
 
@@ -208,12 +181,9 @@ class PemesananController extends Controller
             ->with('success', 'Status pemesanan berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage (Admin)
-     */
+   
     public function destroy(Pemesanan $pemesanan)
     {
-        // Kembalikan status jadwal jadi tersedia
         $jadwal = $pemesanan->jadwal;
         if ($jadwal) {
             $jadwal->update(['status' => 'tersedia']);
@@ -225,9 +195,7 @@ class PemesananController extends Controller
             ->with('success', 'Pemesanan berhasil dihapus!');
     }
 
-    /**
-     * Show orders history for logged in user
-     */
+   
     public function ordersHistory()
 {
     if (!auth()->check()) {
@@ -241,7 +209,8 @@ class PemesananController extends Controller
                   ->orWhere('customer_email', auth()->user()->email);
         })
         ->latest()
-        ->get();
+        ->get()
+        ->fresh();
 
     return view('booking.orders-history', compact('pemesanans'));
 }
@@ -254,7 +223,6 @@ class PemesananController extends Controller
         'status' => 'cancelled'
     ]);
     
-    // Kembalikan jadwal jadi tersedia
     $pemesanan->jadwal->update(['status' => 'tersedia']);
     
     return redirect()->back()
