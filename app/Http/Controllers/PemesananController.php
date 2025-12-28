@@ -71,7 +71,7 @@ class PemesananController extends Controller
     $today = today();
 
     if ($selectedDate->lt($today)) {
-        return back()->withErrors(['date' => 'Tanggal booking tidak boleh kurang dari hari ini.'])->withInput();
+        return back()->withErrors(['date' => 'Tanggal booking tidak boleh kurang dari hari ini.'], 'booking')->withInput();
     }
 
     // VALIDASI WAKTU TIDAK BOLEH SUDAH LEWAT
@@ -79,7 +79,7 @@ class PemesananController extends Controller
     $now = now();
 
     if ($bookingDateTime->lte($now)) {
-        return back()->withErrors(['start_time' => 'Waktu booking sudah lewat. Silakan pilih waktu yang akan datang.'])->withInput();
+        return back()->withErrors(['start_time' => 'Waktu booking sudah lewat. Silakan pilih waktu yang akan datang.'], 'booking')->withInput();
     }
 
     // VALIDASI MINIMAL BOOKING 1 JAM DARI SEKARANG
@@ -87,7 +87,7 @@ class PemesananController extends Controller
     if ($bookingDateTime->lt($minimumBookingTime)) {
         return back()->withErrors([
             'start_time' => 'Booking harus dilakukan minimal 1 jam sebelum waktu main. Sekarang: ' . $now->format('H:i') . ', Minimal: ' . $minimumBookingTime->format('H:i')
-        ])->withInput();
+        ], 'booking')->withInput();
     }
 
     $lapangan = Lapangan::findOrFail($request->court_id);
@@ -102,40 +102,44 @@ class PemesananController extends Controller
         $startTime = \Carbon\Carbon::parse($request->start_time)->addHours($i)->format('H:i');
         $endTime = \Carbon\Carbon::parse($request->start_time)->addHours($i + 1)->format('H:i');
 
-        // Cek bentrok untuk setiap jam
-        $bentrok = Jadwal::where('court_id', $request->court_id)
+        // Cari jadwal yang sudah ada
+        $jadwal = Jadwal::where('court_id', $request->court_id)
             ->where('date', $request->date)
             ->where('start_time', $startTime)
-            ->whereIn('status', ['pending', 'terboking'])
-            ->exists();
+            ->where('end_time', $endTime)
+            ->first();
 
-        if ($bentrok) {
-            return back()->withErrors([
-                'start_time' => "Jadwal jam $startTime - $endTime sudah dibooking. Silakan pilih waktu lain."
-            ])->withInput();
-        }
-
-        // Buat jadwal per jam
-        $jadwal = Jadwal::firstOrCreate(
-            [
+        if ($jadwal) {
+            // Jadwal sudah ada, cek statusnya
+            if (in_array($jadwal->status, ['pending', 'terboking'])) {
+                return back()->withErrors([
+                    'start_time' => "Jadwal jam $startTime - $endTime sudah dibooking. Silakan pilih waktu lain."
+                ], 'booking')->withInput();
+            }
+            
+            // Status tersedia, update jadi pending
+            $jadwal->update(['status' => 'pending']);
+        } else {
+        // Jadwal belum ada, buat baru dengan try-catch
+        try {
+            $jadwal = Jadwal::create([
                 'court_id' => $request->court_id,
                 'date' => $request->date,
                 'start_time' => $startTime,
                 'end_time' => $endTime,
-            ],
-            [
                 'status' => 'pending'
-            ]
-        );
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
 
-        // Double-check kalau jadwal sudah dibooking orang lain
-        if (!$jadwal->wasRecentlyCreated && in_array($jadwal->status, ['pending', 'terboking'])) {
-            return back()->withErrors([
-                'start_time' => "Jadwal jam $startTime - $endTime baru saja dibooking orang lain. Silakan pilih waktu lain."
-            ])->withInput();
+            if ($e->getCode() == 23000) {
+                return back()->withErrors([
+                    'start_time' => "Jadwal jam $startTime - $endTime baru saja dibooking orang lain. Silakan pilih waktu lain."
+                ], 'booking')->withInput();
+            }
+            throw $e; 
         }
+    }
 
-        $jadwal->update(['status' => 'pending']);
         $jadwalIds[] = $jadwal->id;
     }
 
