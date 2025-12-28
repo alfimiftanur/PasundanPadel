@@ -1,12 +1,14 @@
-<x-layout title="Admin Dashboard - PasundanPadel">
-    <div class="min-h-screen bg-[#dfe6db] p-6">
-        <div class="max-w-7xl mx-auto">
+<x-layout>
+ <x-slot:title>Admin's Panel</x-slot:title>
+   <section class="min-h-screen bg-[#dfe6db]">
+    <div class="max-w-7xl mx-auto p-6">
+
             <!-- Header -->
             <div class="mb-8">
                 <h2 class="text-4xl italic font-semibold font-serif text-teal-900 text-center mb-2">
                 Admin's Panel
             </h2>
-                <p class="text-teal-900 text-center mt-1">“All set! Thanks for keeping things running smoothly.”</p>
+                <p class="text-teal-900 text-center mt-1">“All set! Things running smoothly.”</p>
             </div>
 
             <!-- Stats Cards -->
@@ -15,7 +17,7 @@
                 <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
                     <div class="flex justify-between items-start">
                         <div>
-                            <p class="text-gray-500 text-sm">Total Lapangan</p>
+                            <p class="text-gray-500 text-sm">Total Courts</p>
                             <p class="text-4xl font-bold text-gray-900 mt-2">{{ $totalCourts ?? 6 }}</p>
                         </div>
                         <div class="bg-blue-50 p-3 rounded-xl">
@@ -29,7 +31,7 @@
                 </div>
 
                 <!-- Total Users -->
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
                     <div class="flex justify-between items-start">
                         <div>
                             <p class="text-gray-500 text-sm">Total Users</p>
@@ -47,10 +49,10 @@
                 </div>
 
                 <!-- Total Booking -->
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
                     <div class="flex justify-between items-start">
                         <div>
-                            <p class="text-gray-500 text-sm">Total Booking</p>
+                            <p class="text-gray-500 text-sm">Total Bookings</p>
                             <p class="text-4xl font-bold text-red-500 mt-2">{{ $totalBookings ?? 1 }}</p>
                             <div class="flex gap-2 mt-2 text-xs">
                                 <span class="text-green-500">{{ $pendingBookings ?? 0 }} Pending</span>
@@ -68,7 +70,7 @@
                 </div>
 
                 <!-- Cancelled -->
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
                     <div class="flex justify-between items-start">
                         <div>
                             <p class="text-gray-500 text-sm">Cancelled</p>
@@ -85,25 +87,25 @@
             </div>
 
             <!-- Revenue Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
                 <!-- Total Pendapatan Hari Ini -->
                 <div class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl shadow-sm p-6 text-white">
-                    <p class="text-teal-100 text-sm">Total Pendapatan Hari Ini</p>
+                    <p class="text-teal-100 text-sm">Today's Revenue</p>
                     <p class="text-3xl font-bold mt-2">Rp {{ number_format($todayRevenue ?? 0, 0, ',', '.') }}</p>
                 </div>
 
                 <!-- Total Pendapatan Bulan Ini -->
                 <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl shadow-sm p-6 text-white">
-                    <p class="text-blue-100 text-sm">Total Pendapatan Bulan Ini</p>
+                    <p class="text-blue-100 text-sm">Monthly Revenue</p>
                     <p class="text-3xl font-bold mt-2">Rp {{ number_format($monthRevenue ?? 0, 0, ',', '.') }}</p>
                 </div>
             </div>
 
             <!-- Quick Actions -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-4">
                 <!-- Kelola Lapangan -->
                 <a href="{{ route('lapangan.index') }}"
-                    class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
+                    class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-2">
                     <div class="bg-blue-50 p-3 rounded-xl">
                         <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -112,14 +114,14 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="font-semibold text-gray-900">Kelola Lapangan</p>
+                        <p class="font-semibold text-gray-900">Courts</p>
 
                     </div>
                 </a>
 
                 <!-- Kelola Booking -->
-                <a href="{{ route('pemesanan.index') }}"
-                    class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
+                <a href="/booking-list"
+                    class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-2">
                     <div class="bg-green-50 p-3 rounded-xl">
                         <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -128,13 +130,13 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="font-semibold text-gray-900">Kelola Booking</p>
+                        <p class="font-semibold text-gray-900">Bookings</p>
 
                     </div>
                 </a>
 
                 <a href="/jadwal"
-                    class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
+                    class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-2">
 
                     <div class="bg-purple-50 p-3 rounded-xl">
                         <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,14 +146,14 @@
                     </div>
 
                     <div>
-                        <p class="font-semibold text-gray-900">Kelola Jadwal</p>
+                        <p class="font-semibold text-gray-900">Schedule</p>
                     </div>
                 </a>
 
 
                 <!-- export PDF -->
                 <a href="#"
-                    class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
+                    class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
                     <div class="bg-red-50 p-3 rounded-xl">
                         <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -168,11 +170,10 @@
 
             <!-- Recent Bookings Table -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100">
-                <div class="flex justify-between items-center p-6 border-b border-gray-100">
+                <div class="flex justify-between items-center p-4 border-b border-gray-100">
                     <h2 class="text-xl font-semibold text-gray-900">Recent Bookings</h2>
-    {{-- nanti href ini diisi ke pemesanan>>index --}}
-                    <a href="{{ route('pemesanan.index') }}" class="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1">
-                        Lihat Semua
+                    <a href="/booking-list" class="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1">
+                        View all
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
                             </path>
@@ -184,13 +185,13 @@
                         <thead>
                             <tr class="text-left text-gray-500 text-sm border-b border-gray-100">
                                 <th class="px-6 py-4 font-medium">ID</th>
-                                <th class="px-6 py-4 font-medium">USER</th>
-                                <th class="px-6 py-4 font-medium">LAPANGAN</th>
-                                <th class="px-6 py-4 font-medium">JADWAL</th>
-                                <th class="px-6 py-4 font-medium">HARGA</th>
-                                <th class="px-6 py-4 font-medium">STATUS</th>
-                                <th class="px-6 py-4 font-medium">PAYMENT</th>
-                                <th class="px-6 py-4 font-medium">AKSI</th>
+                                <th class="px-6 py-4 font-medium">User</th>
+                                <th class="px-6 py-4 font-medium">Court</th>
+                                <th class="px-6 py-4 font-medium">Schedule</th>
+                                <th class="px-6 py-4 font-medium">Price</th>
+                                <th class="px-6 py-4 font-medium">Status</th>
+                                <th class="px-6 py-4 font-medium">Payment</th>
+                                <th class="px-6 py-4 font-medium">Action</th>
                             </tr>
                         </thead>
                         <tbody>
