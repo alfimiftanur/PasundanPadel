@@ -31,11 +31,6 @@ Route::get('/register', function () {
 Route::get('/booking/{courtId}', [PemesananController::class, 'create'])->name('booking.create');
 Route::post('/booking', [PemesananController::class, 'store'])->name('pemesanan.store');
 
-
-// 1. Route untuk PemesananController (BARU - ganti yang lama pakai closure)
-Route::get('/booking/{courtId}', [PemesananController::class, 'create'])->name('booking.create');
-Route::post('/booking', [PemesananController::class, 'store'])->name('pemesanan.store');
-
 // 2. Route Success Page (BARU)
 Route::get('/booking-success', function() {
     return view('booking.success');

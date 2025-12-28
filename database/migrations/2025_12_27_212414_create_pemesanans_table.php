@@ -14,9 +14,7 @@ return new class extends Migration
             $table->unsignedBigInteger('jadwal_id');
             $table->unsignedBigInteger('court_id');
             
-            // Data customer (untuk guest booking)
-            $table->string('customer_name');
-            $table->string('customer_email');
+            // Data customer
             $table->string('customer_phone');
             $table->text('notes')->nullable();
             

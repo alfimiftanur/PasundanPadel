@@ -13,8 +13,6 @@ class Pemesanan extends Model
         'user_id',
         'jadwal_id',
         'court_id',
-        'customer_name',
-        'customer_email',
         'customer_phone',
         'notes',
         'duration',
