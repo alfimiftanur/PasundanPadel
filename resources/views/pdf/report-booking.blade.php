@@ -1,223 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Booking Report - Pasundan Padel</title>
+    <meta charset="UTF-8">
+    <title>Booking Report - Pasundan Padel</title>
 
-<style>
-    body {
-        font-family: DejaVu Sans, sans-serif;
-        font-size: 11px;
-        color: #1f2937;
-        margin: 0;
-        padding: 30px;
-        background: #f3f4f6;
-    }
-
-    .page {
-        background: #ffffff;
-        padding: 32px;
-    }
-
- 
-    .header {
-        text-align: center;
-        border-bottom: 3px solid #0f766e;
-        padding-bottom: 14px;
-        margin-bottom: 26px;
-    }
-
-    .header h1 {
-        margin: 0;
-        font-size: 22px;
-        letter-spacing: 1px;
-        color: #0f766e;
-    }
-
-    .header p {
-        margin-top: 4px;
-        font-size: 12px;
-        color: #6b7280;
-    }
-
-    .info {
-        font-size: 11px;
-        margin-bottom: 18px;
-    }
-
- 
-    .summary {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 26px;
-    }
-
-    .summary td {
-        border: 1px solid #e5e7eb;
-        padding: 12px 6px;
-        text-align: center;
-        width: 20%;
-    }
-
-    .summary span {
-        font-size: 10px;
-        color: #6b7280;
-    }
-
-    .summary h3 {
-        margin: 6px 0 0;
-        font-size: 18px;
-        color: #0f766e;
-    }
-
-   
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    thead th {
-        background: #0f766e;
-        color: white;
-        padding: 8px;
-        font-size: 10px;
-        text-align: center;
-    }
-
-    tbody td {
-        border: 1px solid #e5e7eb;
-        padding: 7px;
-        font-size: 10px;
-        text-align: center;
-    }
-
-    tbody tr:nth-child(even) {
-        background: #f9fafb;
-    }
-
-    .empty {
-        padding: 18px;
-        text-align: center;
-        color: #6b7280;
-    }
-
-   
-    .total {
-        margin-top: 16px;
-        text-align: right;
-        font-size: 12px;
-        font-weight: bold;
-    }
-
-   
-    .footer {
-        position: fixed;
-        bottom: 18px;
-        left: 0;
-        right: 0;
-        text-align: center;
-        font-size: 9px;
-        color: #9ca3af;
-    }
-</style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body class="bg-slate-100 text-slate-800 text-[11px] font-sans">
 
-<div class="page">
+    <div class="max-w-5xl mx-auto bg-white p-8 mt-8">
 
- 
-    <div class="header">
-        <h1>Booking Report</h1>
-        <p>Pasundan Padel</p>
+
+        <div class="text-center border-b-4 border-teal-700 pb-4 mb-6">
+            <h1 class="text-2xl font-bold tracking-wide text-teal-700">
+                Booking Report
+            </h1>
+            <p class="text-sm text-slate-500 mt-1">
+                Pasundan Padel
+            </p>
+        </div>
+
+
+        <div class="text-sm mb-5">
+            <span class="font-semibold">Print Date:</span>
+            December 29, 2025 · 09:49
+        </div>
+
+
+        <div class="grid grid-cols-5 gap-2 mb-6">
+            <div class="border rounded-lg py-3 text-center">
+                <p class="text-[10px] text-slate-500">Total Bookings</p>
+                <p class="text-lg font-bold text-teal-700">12</p>
+            </div>
+            <div class="border rounded-lg py-3 text-center">
+                <p class="text-[10px] text-slate-500">Pending</p>
+                <p class="text-lg font-bold text-teal-700">3</p>
+            </div>
+            <div class="border rounded-lg py-3 text-center">
+                <p class="text-[10px] text-slate-500">Confirmed</p>
+                <p class="text-lg font-bold text-teal-700">5</p>
+            </div>
+            <div class="border rounded-lg py-3 text-center">
+                <p class="text-[10px] text-slate-500">Completed</p>
+                <p class="text-lg font-bold text-teal-700">3</p>
+            </div>
+            <div class="border rounded-lg py-3 text-center">
+                <p class="text-[10px] text-slate-500">Cancelled</p>
+                <p class="text-lg font-bold text-teal-700">1</p>
+            </div>
+        </div>
+
+
+        <div class="overflow-hidden rounded-lg border">
+            <table class="w-full border-collapse">
+                <thead class="bg-teal-700 text-white text-[10px]">
+                    <tr>
+                        <th class="py-2 px-2">ID</th>
+                        <th>User</th>
+                        <th>Court</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Duration</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr class="border-b">
+                        <td class="py-2">001</td>
+                        <td>Kim Mingyu</td>
+                        <td>Court A</td>
+                        <td>20-12-2025</td>
+                        <td>18:00 - 20:00</td>
+                        <td>2 hours</td>
+                        <td>Rp 300,000</td>
+                        <td class="font-semibold text-green-700">Confirmed</td>
+                    </tr>
+                    <tr class="border-b bg-slate-50">
+                        <td class="py-2">002</td>
+                        <td>Lando Norris</td>
+                        <td>Court B</td>
+                        <td>21-12-2025</td>
+                        <td>19:00 - 21:00</td>
+                        <td>2 hours</td>
+                        <td>Rp 300,000</td>
+                        <td class="font-semibold text-blue-700">Completed</td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" class="py-4 text-slate-500">
+                            No additional booking data available
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="mt-4 text-right text-sm font-bold">
+            Total Revenue: Rp 600,000
+        </div>
+
+
+        <div class="mt-8 pt-4 border-t text-center text-[9px] text-slate-400">
+            This report was automatically generated by the Pasundan Padel Management System<br>
+            Printed on December 29, 2025
+        </div>
+
     </div>
-
-   
-    <div class="info">
-        <strong>Print Date:</strong> December 29, 2025 · 09:49
-    </div>
-
-    
-    <table class="summary">
-        <tr>
-            <td>
-                <span>Total Bookings</span>
-                <h3>12</h3>
-            </td>
-            <td>
-                <span>Pending</span>
-                <h3>3</h3>
-            </td>
-            <td>
-                <span>Confirmed</span>
-                <h3>5</h3>
-            </td>
-            <td>
-                <span>Completed</span>
-                <h3>3</h3>
-            </td>
-            <td>
-                <span>Cancelled</span>
-                <h3>1</h3>
-            </td>
-        </tr>
-    </table>
-
-    
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>User</th>
-                <th>Court</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Duration</th>
-                <th>Total Price</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>001</td>
-                <td>Kim Mingyu</td>
-                <td>Court A</td>
-                <td>20-12-2025</td>
-                <td>18:00 - 20:00</td>
-                <td>2 hours</td>
-                <td>Rp 300,000</td>
-                <td>Confirmed</td>
-            </tr>
-            <tr>
-                <td>002</td>
-                <td>Lando Norris</td>
-                <td>Court B</td>
-                <td>21-12-2025</td>
-                <td>19:00 - 21:00</td>
-                <td>2 hours</td>
-                <td>Rp 300,000</td>
-                <td>Completed</td>
-            </tr>
-            <tr>
-                <td colspan="8" class="empty">
-                    No additional booking data available
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-   
-    <div class="total">
-        Total Revenue: Rp 600,000
-    </div>
-
-</div>
-
-
-<div class="footer">
-    This report was automatically generated by the Pasundan Padel Management System<br>
-    Printed on December 29, 2025
-</div>
 
 </body>
+
 </html>
