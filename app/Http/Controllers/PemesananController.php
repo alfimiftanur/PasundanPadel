@@ -45,136 +45,137 @@ class PemesananController extends Controller
 
    
     public function store(Request $request)
-{
-    if (!auth()->check()) {
-        return redirect()->back()
-            ->withErrors(['auth' => 'You must log in first to make a booking.'], 'booking')
-            ->withInput();
-    }
+    {
+        if (!auth()->check()) {
+            return redirect()->back()
+                ->withErrors(['auth' => 'You must log in first to make a booking.'], 'booking')
+                ->withInput();
+        }
 
-    $request->validate([
-        'court_id' => 'required|exists:lapangans,id',
-        'date' => 'required|date|after_or_equal:today',
-        'start_time' => 'required',
-        'duration' => 'required|integer|min:1',
-        'name' => 'required|string|max:255',
-        'email' => 'required|email',
-        'phone' => 'required|string',
-    ]);
+        $request->validate([
+            'court_id' => 'required|exists:lapangans,id',
+            'date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required',
+            'duration' => 'required|integer|min:1',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string',
+        ]);
 
-    $duration = (int) $request->duration;
+        $duration = (int) $request->duration;
 
-    $selectedDate = \Carbon\Carbon::parse($request->date)->startOfDay();
-    $today = today();
+        $selectedDate = \Carbon\Carbon::parse($request->date)->startOfDay();
+        $today = today();
 
-    if ($selectedDate->lt($today)) {
-        return back()->withErrors(['date' => 'The booking date cannot be less than today.'], 'booking')->withInput();
-    }
+        if ($selectedDate->lt($today)) {
+            return back()->withErrors(['date' => 'The booking date cannot be less than today.'], 'booking')->withInput();
+        }
 
-    $bookingDateTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time);
-    $now = now();
+        $bookingDateTime = \Carbon\Carbon::parse($request->date . ' ' . $request->start_time);
+        $now = now();
 
-    if ($bookingDateTime->lte($now)) {
-        return back()->withErrors(['start_time' => 'Booking time has already passed. Please select a future time.'], 'booking')->withInput();
-    }
+        if ($bookingDateTime->lte($now)) {
+            return back()->withErrors(['start_time' => 'Booking time has already passed. Please select a future time.'], 'booking')->withInput();
+        }
 
-    $minimumBookingTime = $now->copy()->addHour();
-    if ($bookingDateTime->lt($minimumBookingTime)) {
-        return back()->withErrors([
-            'start_time' => 'Booking must be made at least 1 hour before the playing time. Current time: ' . $now->format('H:i') . ', Minimum: ' . $minimumBookingTime->format('H:i')
-        ], 'booking')->withInput();
-    }
+        $minimumBookingTime = $now->copy()->addHour();
+        if ($bookingDateTime->lt($minimumBookingTime)) {
+            return back()->withErrors([
+                'start_time' => 'Booking must be made at least 1 hour before the playing time. Current time: ' . $now->format('H:i') . ', Minimum: ' . $minimumBookingTime->format('H:i')
+            ], 'booking')->withInput();
+        }
 
-    $closingTime = \Carbon\Carbon::parse($request->date . ' 22:00:00');
-    $endBookingTime = $bookingDateTime->copy()->addHours($duration);
-    
-    if ($endBookingTime->gt($closingTime)) {
-        $maxStartHour = 22 - $duration;
-        return back()->withErrors([
-            'duration' => "Booking exceeds closing time 22:00. Maximum start time is {$maxStartHour}:00 for a {$duration} hour duration."
-        ], 'booking')->withInput();
-    }
+        $closingTime = \Carbon\Carbon::parse($request->date . ' 22:00:00');
+        $endBookingTime = $bookingDateTime->copy()->addHours($duration);
+        
+        if ($endBookingTime->gt($closingTime)) {
+            $maxStartHour = 22 - $duration;
+            return back()->withErrors([
+                'duration' => "Booking exceeds closing time 22:00. Maximum start time is {$maxStartHour}:00 for a {$duration} hour duration."
+            ], 'booking')->withInput();
+        }
 
-    $lapangan = Lapangan::findOrFail($request->court_id);
-    $totalPrice = $lapangan->harga_per_jam * $duration;
+        $lapangan = Lapangan::findOrFail($request->court_id);
+        $totalPrice = $lapangan->harga_per_jam * $duration;
 
-    try {
-        $result = DB::transaction(function () use ($request, $duration, $totalPrice) {
-            $jadwalIds = [];
-            
-            for ($i = 0; $i < $duration; $i++) {
-                $startTime = \Carbon\Carbon::parse($request->start_time)->addHours($i)->format('H:i');
-                $endTime = \Carbon\Carbon::parse($request->start_time)->addHours($i + 1)->format('H:i');
+        try {
+            $result = DB::transaction(function () use ($request, $duration, $totalPrice) {
+                $jadwalIds = [];
+                
+                for ($i = 0; $i < $duration; $i++) {
+                    $startTime = \Carbon\Carbon::parse($request->start_time)->addHours($i)->format('H:i');
+                    $endTime = \Carbon\Carbon::parse($request->start_time)->addHours($i + 1)->format('H:i');
 
-                $bentrok = Jadwal::where('court_id', $request->court_id)
-                    ->where('date', $request->date)
-                    ->where('start_time', $startTime)
-                    ->whereIn('status', ['pending', 'terboking'])
-                    ->exists();
+                    $bentrok = Jadwal::where('court_id', $request->court_id)
+                        ->where('date', $request->date)
+                        ->where('start_time', $startTime)
+                        ->whereIn('status', ['pending', 'terboking'])
+                        ->exists();
 
-                if ($bentrok) {
-                    throw new \Exception("The $startTime - $endTime schedule is already booked. Please choose another time.");
-                }
+                    if ($bentrok) {
+                        throw new \Exception("The $startTime - $endTime schedule is already booked. Please choose another time.");
+                    }
 
-                try {
-                    $jadwal = Jadwal::firstOrCreate(
-                        [
-                            'court_id' => $request->court_id,
-                            'date' => $request->date,
-                            'start_time' => $startTime,
-                            'end_time' => $endTime,
-                        ],
-                        [
-                            'status' => 'pending'
-                        ]
-                    );
-                } catch (\Illuminate\Database\QueryException $e) {
-                    if ($e->getCode() == 23000) {
+                    try {
+                        $jadwal = Jadwal::firstOrCreate(
+                            [
+                                'court_id' => $request->court_id,
+                                'date' => $request->date,
+                                'start_time' => $startTime,
+                                'end_time' => $endTime,
+                            ],
+                            [
+                                'status' => 'pending'
+                            ]
+                        );
+                    } catch (\Illuminate\Database\QueryException $e) {
+                        if ($e->getCode() == 23000) {
+                            throw new \Exception("The $startTime - $endTime schedule is already booked by someone else. Please choose another time.");
+                        }
+                        throw $e;
+                    }
+
+                    if (!$jadwal->wasRecentlyCreated && in_array($jadwal->status, ['pending', 'terboking'])) {
                         throw new \Exception("The $startTime - $endTime schedule is already booked by someone else. Please choose another time.");
                     }
-                    throw $e;
+
+                    $jadwal->update(['status' => 'pending']);
+                    $jadwalIds[] = $jadwal->id;
                 }
 
-                if (!$jadwal->wasRecentlyCreated && in_array($jadwal->status, ['pending', 'terboking'])) {
-                    throw new \Exception("The $startTime - $endTime schedule is already booked by someone else. Please choose another time.");
-                }
+                $pemesanan = Pemesanan::create([
+                    'user_id' => auth()->check() ? auth()->id() : null,
+                    'jadwal_id' => $jadwalIds[0], 
+                    'court_id' => $request->court_id,
+                    'customer_name' => $request->name,
+                    'customer_email' => $request->email,
+                    'customer_phone' => $request->phone,
+                    'notes' => $request->notes,
+                    'duration' => $duration,
+                    'total_price' => $totalPrice,
+                    'status' => 'pending',
+                    'payment_status' => 'unpaid',
+                ]);
 
-                $jadwal->update(['status' => 'pending']);
-                $jadwalIds[] = $jadwal->id;
-            }
+                \Log::info('Booking successfully created!', [
+                    'pemesanan_id' => $pemesanan->id,
+                    'jadwal_ids' => $jadwalIds,
+                ]);
 
-            $pemesanan = Pemesanan::create([
-                'user_id' => auth()->check() ? auth()->id() : null,
-                'jadwal_id' => $jadwalIds[0], 
-                'court_id' => $request->court_id,
-                'customer_name' => $request->name,
-                'customer_email' => $request->email,
-                'customer_phone' => $request->phone,
-                'notes' => $request->notes,
-                'duration' => $duration,
-                'total_price' => $totalPrice,
-                'status' => 'pending',
-                'payment_status' => 'unpaid',
-            ]);
+                return redirect()->route('pembayaran.checkout', $pemesanan->id)
+                    ->with('success', 'Booking successfully created! Please proceed with payment.');
+            });
 
-            \Log::info('Booking berhasil dibuat!', [
-                'pemesanan_id' => $pemesanan->id,
-                'jadwal_ids' => $jadwalIds,
-            ]);
+            return $result;
 
-            return redirect()->route('booking.success')->with('pemesanan_id', $pemesanan->id);
-        });
-
-        return $result; 
-
-    } catch (\Exception $e) {
-        return back()->withErrors([
-            'start_time' => $e->getMessage()
-        ], 'booking')->withInput();
+        } catch (\Exception $e) {
+            return back()->withErrors([
+                'start_time' => $e->getMessage()
+            ], 'booking')->withInput();
+        }
     }
-}
 
-
+ 
     public function show($id)
     {
         $title = 'Detail Booking';
@@ -185,7 +186,7 @@ class PemesananController extends Controller
         return view('pemesanan.show', compact('pemesanan', 'title'));
     }
 
-
+    
     public function update(Request $request, Pemesanan $pemesanan)
     {
         $validated = $request->validate([
@@ -204,7 +205,7 @@ class PemesananController extends Controller
         return redirect()->route('pemesanan.index')
             ->with('success', 'Order status updated successfully!');
     }
-
+   
     public function destroy(Pemesanan $pemesanan)
     {
         $jadwal = $pemesanan->jadwal;
@@ -218,7 +219,7 @@ class PemesananController extends Controller
             ->with('success', 'Order successfully deleted!');
     }
 
-
+   
     public function ordersHistory()
     {
         if (!auth()->check()) {
@@ -232,7 +233,8 @@ class PemesananController extends Controller
                       ->orWhere('customer_email', auth()->user()->email);
             })
             ->latest()
-            ->get();
+            ->get()
+            ->fresh();
 
         return view('booking.orders-history', compact('pemesanans'));
     }
@@ -250,5 +252,5 @@ class PemesananController extends Controller
         return redirect()->back()
             ->with('success', 'Booking successfully cancelled.');
     }
-    
+
 }

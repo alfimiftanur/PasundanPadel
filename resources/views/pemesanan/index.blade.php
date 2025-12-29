@@ -137,9 +137,9 @@
                             <tr>
                                 <td class="px-4 py-3">#{{ $pemesanan->id }}</td>
                                 <td class="px-4 py-3">
-                                    <div class="font-semibold">{{ $pemesanan->customer_name }}</div>
+                                    <div class="font-semibold">{{ $pemesanan->user?->name }}</div>
                                     <div class="text-xs text-slate-500">
-                                        {{ $pemesanan->customer_email }}
+                                        {{ $pemesanan->user?->email }}
                                     </div>
                                 </td>
                                 <td class="px-4 py-3">
