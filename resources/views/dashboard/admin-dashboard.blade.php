@@ -243,11 +243,7 @@
                             @empty
                                 <tr class="border-b border-gray-50">
                                     <td colspan="8" class="px-6 py-8 text-center text-gray-500">
-<<<<<<< Updated upstream
-                                        Belum ada booking
-=======
                                         Tidak ada data booking
->>>>>>> Stashed changes
                                     </td>
                                 </tr>
                             @endforelse
@@ -257,8 +253,4 @@
             </div>
         </div>
     </div>
-<<<<<<< Updated upstream
 </x-layout>
-=======
-</x-layout>
->>>>>>> Stashed changes

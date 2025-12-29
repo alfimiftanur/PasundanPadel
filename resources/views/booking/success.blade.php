@@ -13,19 +13,19 @@
 
             {{-- Message --}}
             <h1 class="text-2xl font-bold text-gray-800 mb-2">
-                Booking berhasil! Silakan lakukan pembayaran.
+                Booking successful! Please make payment.
             </h1>
 
             {{-- Buttons --}}
             <div class="flex gap-4 mt-8">
                 <a href="{{ route('home') }}"
                    class="flex-1 bg-white border-2 border-teal-600 text-teal-600 py-3 rounded-lg hover:bg-teal-50 transition font-semibold text-center">
-                    Kembali ke Home
+                    Back to Home
                 </a>
                 
                 <a href="{{ route('booking.orders-history') }}"
                    class="flex-1 bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700 transition font-semibold text-center">
-                    Lakukan Pembayaran
+                    Make Payment
                 </a>
             </div>
         </div>
