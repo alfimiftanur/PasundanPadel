@@ -44,6 +44,10 @@ Route::get('/orders-history', [PemesananController::class, 'ordersHistory'])
     ->middleware('auth')
     ->name('booking.orders-history');
 
+Route::get('/booking/{pemesanan}/pdf', [App\Http\Controllers\PemesananController::class, 'exportPdf'])
+    ->middleware('auth')
+    ->name('booking.pdf');
+
 
 
 Route::get('/pembayaran/{pemesanan}', [PembayaranController::class, 'checkout'])
@@ -84,7 +88,7 @@ Route::middleware(['role:admin'])->group(function () {
     Route::resource('lapangan', LapanganController::class);
 
 
-     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
+    Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
     Route::get('/jadwal/edit', [JadwalController::class, 'edit'])->name('jadwal.edit');
     Route::post('/jadwal', [JadwalController::class, 'store'])->name('jadwal.store');
     Route::post('/jadwal/{id}/update-status', [JadwalController::class, 'updateStatus'])->name('jadwal.updateStatus');
@@ -93,5 +97,8 @@ Route::middleware(['role:admin'])->group(function () {
     Route::get('/detail-booking/{pemesanan}', [PemesananController::class, 'show'])->name('pemesanan.show.admin');
     Route::put('/pemesanan/{pemesanan}', [PemesananController::class, 'update'])->name('pemesanan.update');
     Route::delete('/pemesanan/{pemesanan}', [PemesananController::class, 'destroy'])->name('pemesanan.destroy');
+
+    Route::get('/bookings/export-pdf', [App\Http\Controllers\AdminController::class, 'exportBookingReport'])
+        ->name('bookings.pdf');
 
 });

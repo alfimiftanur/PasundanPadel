@@ -137,7 +137,7 @@
 
                                             <div x-show="open" x-transition @click.outside="open = false"
                                                 class="absolute right-0 mt-2 w-36 bg-white border rounded-lg shadow-lg z-[9999]">
-                                                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 text-left">
+                                                <a href="{{ route('booking.pdf', $pemesanan) }}" class="block px-4 py-2 text-sm hover:bg-gray-100 text-left">
                                                     Export PDF
                                                 </a>
                                             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Lapangan;
 use Illuminate\Http\Request;
 use App\Models\Pemesanan;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminController extends Controller
 {
@@ -37,5 +38,31 @@ class AdminController extends Controller
             'monthRevenue',
             'recentBookings'
         ));
+    }
+
+    public function exportBookingReport()
+    {
+        $bookings = Pemesanan::with(['user', 'jadwal', 'lapangan'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $stats = [
+            'total' => $bookings->count(),
+            'pending' => $bookings->where('status', 'pending')->count(),
+            'confirmed' => $bookings->where('status', 'confirmed')->count(),
+            'completed' => $bookings->where('status', 'completed')->count(),
+            'cancelled' => $bookings->where('status', 'cancelled')->count(),
+        ];
+
+        $data = [
+            'bookings' => $bookings,
+            'stats' => $stats,
+            'exported_at' => now()->format('F d, Y · H:i')
+        ];
+
+         $pdf = Pdf::loadView('pdf.report-booking', $data)
+         ->setPaper('a4', 'landscape');
+
+        return $pdf->download('booking-report-' . now()->format('Y-m-d') . '.pdf');
     }
 }
