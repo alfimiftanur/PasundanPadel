@@ -23,7 +23,6 @@ class LapanganController extends Controller
     {
         $query = Lapangan::where('status', 'tersedia');
 
-        // Search by name or location
         if ($request->has('keyword') && !empty($request->keyword)) {
             $keyword = $request->keyword;
             $query->where(function ($q) use ($keyword) {
@@ -33,12 +32,10 @@ class LapanganController extends Controller
             });
         }
 
-        // Filter by type
         if ($request->has('tipe') && !empty($request->tipe)) {
             $query->where('tipe_lapangan', $request->tipe);
         }
 
-        // Filter by price range
         if ($request->has('min_price') && !empty($request->min_price)) {
             $query->where('harga_per_jam', '>=', $request->min_price);
         }
@@ -49,7 +46,6 @@ class LapanganController extends Controller
 
         $lapangans = $query->get();
 
-        // For AJAX requests, return JSON
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'courts' => $lapangans->map(fn($l) => [
@@ -73,10 +69,46 @@ class LapanganController extends Controller
      */
     public function showPublic($id)
     {
-        // Ambil data lapangan berdasarkan ID
         $lapangan = Lapangan::findOrFail($id);
         
-        return view('court.detail', compact('lapangan'));
+        $weather = $this->getWeatherData();
+        
+        return view('court.detail', compact('lapangan', 'weather'));
+    }
+
+    /**
+     * Get weather data from OpenWeatherMap API
+     */
+    private function getWeatherData()
+    {
+        try {
+            $apiKey = env('OPENWEATHER_API_KEY');
+            $city = 'Bandung';
+            $url = "https://api.openweathermap.org/data/2.5/weather?q={$city}&appid={$apiKey}&units=metric";
+            
+            $response = file_get_contents($url);
+            $data = json_decode($response, true);
+            
+            if (isset($data['main'])) {
+                return [
+                    'temp' => round($data['main']['temp']),
+                    'description' => ucfirst($data['weather'][0]['description']),
+                    'icon' => $data['weather'][0]['icon'],
+                    'humidity' => $data['main']['humidity'],
+                    'wind_speed' => $data['wind']['speed'],
+                ];
+            }
+        } catch (\Exception $e) {
+            \Log::error('Weather API Error: ' . $e->getMessage());
+        }
+        
+        return [
+            'temp' => 28,
+            'description' => 'Sunny with Cloud',
+            'icon' => '01d',
+            'humidity' => 60,
+            'wind_speed' => 3.5,
+        ];
     }
 
     /**
