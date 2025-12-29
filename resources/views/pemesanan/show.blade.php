@@ -50,11 +50,11 @@
                             <div class="bg-slate-50 rounded-xl p-4 space-y-3">
                                 <div>
                                     <p class="text-sm text-slate-500">Name</p>
-                                    <p class="font-semibold">{{ $pemesanan->user?->name }}</p>
+                                    <p class="font-semibold">{{ $pemesanan->customer_name }}</p>
                                 </div>
                                 <div>
                                     <p class="text-sm text-slate-500">Email</p>
-                                    <p class="font-semibold">{{ $pemesanan->user?->email }}</p>
+                                    <p class="font-semibold">{{ $pemesanan->customer_email }}</p>
                                 </div>
                                 <div>
                                     <p class="text-sm text-slate-500">Phone</p>

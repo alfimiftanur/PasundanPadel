@@ -18,26 +18,28 @@ class Pemesanan extends Model
         'duration',
         'total_price',
         'payment_status',
-        'status', 
+        'status',
+        'snap_token',
+        'transaction_id',
+        'payment_method',
+        'paid_at',
     ];
 
     protected $casts = [
         'total_price' => 'decimal:2',
+        'paid_at' => 'datetime', 
     ];
 
-    // Relasi ke User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relasi ke Lapangan
     public function lapangan()
     {
         return $this->belongsTo(Lapangan::class, 'court_id');
     }
 
-    // Relasi ke Jadwal
     public function jadwal()
     {
         return $this->belongsTo(Jadwal::class);

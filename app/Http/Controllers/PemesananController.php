@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class PemesananController extends Controller
 {
-
+   
     public function index()
     {
         $title = 'Kelola Booking';
@@ -32,7 +32,7 @@ class PemesananController extends Controller
         return view('pemesanan.index', compact('pemesanans', 'title', 'stats'));
     }
 
-
+    
     public function create(Request $request, $courtId)
     {
         $lapangan = Lapangan::findOrFail($courtId);
@@ -43,7 +43,7 @@ class PemesananController extends Controller
         return view('booking.create', compact('lapangan', 'date', 'startTime'));
     }
 
-
+   
     public function store(Request $request)
 {
     if (!auth()->check()) {
