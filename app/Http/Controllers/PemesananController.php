@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PemesananController extends Controller
 {
@@ -253,4 +254,20 @@ class PemesananController extends Controller
             ->with('success', 'Booking successfully cancelled.');
     }
 
+    public function exportPdf(Pemesanan $pemesanan)
+    {
+        if ($pemesanan->user_id !== auth()->id()) {
+        abort(403, 'Unauthorized action.');
+        }
+
+        $data = [
+            'pemesanan' => $pemesanan->load(['jadwal', 'lapangan']),
+            'printed_at' => now()->format('F d, Y · H:i')];
+
+        $pdf = Pdf::loadView('pdf.user-booking-detail', $data)
+            ->setPaper('a4', 'landscape')  
+            ->setOptions(['dpi' => 170]);  
+
+        return $pdf->download('booking-' . str_pad($pemesanan->id, 3, '0', STR_PAD_LEFT) . '.pdf');
+    }
 }

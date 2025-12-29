@@ -152,7 +152,7 @@
 
 
                 <!-- export PDF -->
-                <a href="#"
+                <a href="{{ route('bookings.pdf') }}"
                     class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
                     <div class="bg-red-50 p-3 rounded-xl">
                         <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
