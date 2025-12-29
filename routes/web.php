@@ -64,6 +64,11 @@ Route::get('/pembayaran/{pemesanan}/gagal', [PembayaranController::class, 'gagal
 Route::get('/pembayaran/{pemesanan}/cek-status', [PembayaranController::class, 'cekStatus'])
     ->name('pembayaran.cek-status');
 
+Route::get('/booking-report', function () {
+    return view('pdf.report-booking');
+});
+
+
 
 
 
