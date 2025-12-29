@@ -68,6 +68,9 @@ Route::get('/booking-report', function () {
     return view('pdf.report-booking');
 });
 
+Route::get('/booking-detail', function () {
+    return view('pdf.user-booking-detail');
+});
 
 
 
