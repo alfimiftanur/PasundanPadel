@@ -50,7 +50,7 @@
             <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-8">
                 <p class="text-yellow-800">
                     <i class="fas fa-exclamation-triangle mr-2"></i>
-                    Silakan selesaikan pembayaran Anda dalam 24 jam. Setelah itu booking akan otomatis dibatalkan.
+                    Silakan selesaikan pembayaran Anda dalam 15 Menit. Setelah itu booking akan otomatis dibatalkan.
                 </p>
             </div>
 
