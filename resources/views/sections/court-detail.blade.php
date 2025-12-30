@@ -3,17 +3,14 @@
 <section id="court-detail" class="bg-amber-50 py-10">
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        {{-- LEFT CONTENT --}}
         <div class="lg:col-span-2 space-y-6">
 
-            {{-- Breadcrumb --}}
             <nav class="text-sm text-slate-500">
                 <a href="/" class="hover:text-teal-600">Home</a> /
                 <a href="{{ route('court.index') }}" class="hover:text-teal-600">Court</a> /
                 <span class="text-slate-700 font-medium">{{ $lapangan->nama_lapangan }}</span>
             </nav>
 
-            {{-- Image --}}
             <div class="rounded-3xl overflow-hidden shadow">
                 @if($lapangan->foto)
                     <img src="{{ asset('storage/' . $lapangan->foto) }}"
@@ -26,7 +23,6 @@
                 @endif
             </div>
 
-            {{-- Title & Rating --}}
             <div class="flex items-start justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-slate-900">{{ $lapangan->nama_lapangan }}</h1>
@@ -49,7 +45,6 @@
                 </div>
             </div>
 
-            {{-- Description --}}
             <div class="bg-white rounded-2xl p-6 shadow-sm">
                 <h2 class="font-semibold text-lg mb-2">Description</h2>
                 <p class="text-slate-600 leading-relaxed">
@@ -57,7 +52,6 @@
                 </p>
             </div>
 
-            {{-- Facilities --}}
             <div class="bg-white rounded-2xl p-6 shadow-sm">
                 <h2 class="font-semibold text-lg mb-4">Facilities</h2>
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-slate-600">
@@ -70,7 +64,6 @@
                 </div>
             </div>
 
-            {{-- Reviews --}}
             <div class="bg-white rounded-2xl p-6 shadow-sm">
                 <h2 class="font-semibold text-lg mb-4">Customer Review</h2>
 
@@ -97,10 +90,8 @@
             </div>
         </div>
 
-        {{-- RIGHT SIDEBAR --}}
         <div class="space-y-6">
 
-            {{-- Price Card --}}
             <div class="bg-white rounded-3xl p-6 shadow-lg sticky top-24">
                 <div class="text-center">
                     <p class="text-3xl font-bold text-teal-600">
@@ -110,17 +101,19 @@
                     
                 </div>
 
-                {{-- Weather --}}
                 <div class="mt-6 bg-slate-50 rounded-2xl p-4 flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-slate-500">Weather Today</p>
-                        <p class="text-xl font-semibold">28°C</p>
-                        <p class="text-slate-500 text-sm">Sunny with Cloud</p>
+                        <p class="text-sm text-slate-500">Weather in Bandung</p>
+                        <p class="text-xl font-semibold">{{ $weather['temp'] }}°C</p>
+                        <p class="text-slate-500 text-sm">{{ $weather['description'] }}</p>
                     </div>
-                    <span class="text-3xl"><img width="100" height="100" src="https://img.icons8.com/clouds/100/sun.png" alt="sun"/></span>
+                    <span class="text-3xl">
+                        <img width="80" height="80" 
+                             src="https://openweathermap.org/img/wn/{{ $weather['icon'] }}@2x.png" 
+                             alt="{{ $weather['description'] }}"/>
+                    </span>
                 </div>
 
-                {{-- Buttons --}}
                 <div class="mt-6 space-y-3">
                     <a href="{{ route('booking.create', $lapangan->id) }}"
                        class="block text-center bg-teal-600 hover:bg-teal-500

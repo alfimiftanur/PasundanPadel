@@ -68,7 +68,7 @@
                     <div class="flex justify-between items-start">
                         <div>
                             <p class="text-gray-500 text-sm">Cancelled</p>
-                            <p class="text-4xl font-bold text-blue-600 mt-2">{{ $cancelledBookings ?? 1 }}</p>
+                            <p class="text-4xl font-bold text-blue-600 mt-2">{{ $cancelledBookings ?? 0 }}</p>
                         </div>
                         <div class="bg-red-50 p-3 rounded-xl">
                             <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,6 +78,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
                 <div class="bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl shadow-sm p-6 text-white">
@@ -103,7 +104,6 @@
                     </div>
                     <div>
                         <p class="font-semibold text-gray-900">Courts</p>
-
                     </div>
                 </a>
 
@@ -118,78 +118,23 @@
                     </div>
                     <div>
                         <p class="font-semibold text-gray-900">Bookings</p>
-
                     </div>
                 </a>
 
                 <a href="/jadwal"
                     class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-2">
-
                     <div class="bg-purple-50 p-3 rounded-xl">
                         <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3" />
                             <circle cx="12" cy="12" r="9" stroke-width="2" />
                         </svg>
-                        <!-- input -->
-                        <input type="text" name="search" placeholder="Cari berdasarkan user atau lapangan"
-                            value="{{ request('search') }}"
-                            class="w-full border border-slate-200 rounded-xl
-                   pl-11 pr-10 py-2
-                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-
-                        <!-- clear -->
-                        <button type="button"
-                            onclick="this.previousElementSibling.value=''; this.previousElementSibling.focus();"
-                            class="absolute right-4 top-1/2 -translate-y-1/2
-           text-slate-400 hover:text-slate-600 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-
+                    </div>
                     <div>
                         <p class="font-semibold text-gray-900">Schedule</p>
                     </div>
+                </a>
 
-                    <!-- status booking-->
-                    <select name="status_booking" class="border border-slate-200 rounded-xl px-4 py-2">
-                        <option value="">All Status</option>
-                        <option value="pending" {{ request('status_booking') === 'pending' ? 'selected' : '' }}>Pending
-                        </option>
-                        <option value="confirmed" {{ request('status_booking') === 'confirmed' ? 'selected' : '' }}>
-                            Confirmed</option>
-                        <option value="cancelled" {{ request('status_booking') === 'cancelled' ? 'selected' : '' }}>
-                            Cancelled</option>
-                        <option value="completed" {{ request('status_booking') === 'completed' ? 'selected' : '' }}>
-                            Completed</option>
-                    </select>
-
-                    <!-- payment status-->
-                    <select name="status_pembayaran" class="border border-slate-200 rounded-xl px-4 py-2">
-                        <option value="">All Payment Status</option>
-                        <option value="paid" {{ request('status_pembayaran') === 'paid' ? 'selected' : '' }}>Paid
-                        </option>
-                        <option value="unpaid" {{ request('status_pembayaran') === 'unpaid' ? 'selected' : '' }}>Unpaid
-                        </option>
-                        <option value="pending" {{ request('status_pembayaran') === 'pending' ? 'selected' : '' }}>
-                            Pending</option>
-                    </select>
-
-                    <!-- button -->
-                    <button
-                        class="bg-[#508162] hover:bg-[#4a7a5d] text-white
-               rounded-xl font-semibold py-2">
-                        Apply
-                    </button>
-                </form>
-
-<<<<<<< Updated upstream
-                <!-- export PDF -->
-                <a href="#"
-=======
                 <a href="{{ route('bookings.pdf') }}"
->>>>>>> Stashed changes
                     class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 hover:shadow-md transition-shadow flex items-center gap-4">
                     <div class="bg-red-50 p-3 rounded-xl">
                         <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -200,7 +145,8 @@
                     </div>
                     <div>
                         <p class="font-semibold text-gray-900">Export PDF</p>
-
+                    </div>
+                </a>
             </div>
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-100">
@@ -227,17 +173,6 @@
                                 <th class="px-6 py-4 font-medium">Payment</th>
                                 <th class="px-6 py-4 font-medium">Action</th>
                             </tr>
-<<<<<<< Updated upstream
-                        @empty
-                            <tr>
-                                <td colspan="9" class="px-4 py-8 text-center text-slate-500">
-                                    Tidak ada data booking
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-=======
                         </thead>
                         <tbody>
                             @forelse($recentBookings ?? [] as $booking)
@@ -255,7 +190,7 @@
                                         {{ $booking->lapangan->nama_lapangan }}</td>
                                     <td class="px-6 py-4">
                                         <p class="text-gray-900">{{ \Carbon\Carbon::parse($booking->jadwal->date)->format('d M Y') }}</p>
-                                        <p class="text-gray-400 text-sm">{{ $booking->jadwal->start_time }} - {{ $booking->jadwal->end_time }}</p>
+                                        <p class="text-gray-400 text-sm">{{ $booking->jadwal->start_time }} - {{ \Carbon\Carbon::parse($booking->jadwal->start_time)->addHours($booking->duration)->format('H:i') }}</p>
                                     </td>
                                     <td class="px-6 py-4 text-gray-900">Rp
                                         {{ number_format($booking->total_price, 0, ',', '.') }}</td>
@@ -283,7 +218,6 @@
                                             <span class="text-gray-500">Unpaid</span>
                                         @endif
                                     </td>
-
                                     <td class="px-6 py-4">
                                         <a href="{{ route('pemesanan.show', $booking->id) }}" class="text-gray-600 hover:text-gray-900">Detail</a>
                                     </td>
@@ -298,8 +232,7 @@
                         </tbody>
                     </table>
                 </div>
->>>>>>> Stashed changes
             </div>
-
-            </d>
+        </div>
+    </div>
 </x-layout>

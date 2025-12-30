@@ -1,223 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Booking Report - Pasundan Padel</title>
+    <meta charset="UTF-8">
+    <title>Booking Report - Pasundan Padel</title>
+    <style>
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 11px;
+            color: #1f2937;
+            margin: 0;
+            padding: 30px;
+            background: #f3f4f6;
+        }
 
-<style>
-    body {
-        font-family: DejaVu Sans, sans-serif;
-        font-size: 11px;
-        color: #1f2937;
-        margin: 0;
-        padding: 30px;
-        background: #f3f4f6;
-    }
+        .page {
+            background: #ffffff;
+            padding: 32px;
+        }
 
-    .page {
-        background: #ffffff;
-        padding: 32px;
-    }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #0f766e;
+            padding-bottom: 14px;
+            margin-bottom: 26px;
+        }
 
- 
-    .header {
-        text-align: center;
-        border-bottom: 3px solid #0f766e;
-        padding-bottom: 14px;
-        margin-bottom: 26px;
-    }
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: 1px;
+            color: #0f766e;
+        }
 
-    .header h1 {
-        margin: 0;
-        font-size: 22px;
-        letter-spacing: 1px;
-        color: #0f766e;
-    }
+        .header p {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #6b7280;
+        }
 
-    .header p {
-        margin-top: 4px;
-        font-size: 12px;
-        color: #6b7280;
-    }
+        .info {
+            font-size: 11px;
+            margin-bottom: 18px;
+        }
 
-    .info {
-        font-size: 11px;
-        margin-bottom: 18px;
-    }
+        .summary {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 26px;
+        }
 
- 
-    .summary {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 26px;
-    }
+        .summary td {
+            border: 1px solid #e5e7eb;
+            padding: 12px 6px;
+            text-align: center;
+            width: 20%;
+        }
 
-    .summary td {
-        border: 1px solid #e5e7eb;
-        padding: 12px 6px;
-        text-align: center;
-        width: 20%;
-    }
+        .summary span {
+            font-size: 10px;
+            color: #6b7280;
+        }
 
-    .summary span {
-        font-size: 10px;
-        color: #6b7280;
-    }
+        .summary h3 {
+            margin: 6px 0 0;
+            font-size: 18px;
+            color: #0f766e;
+        }
 
-    .summary h3 {
-        margin: 6px 0 0;
-        font-size: 18px;
-        color: #0f766e;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-   
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+        thead th {
+            background: #0f766e;
+            color: white;
+            padding: 8px;
+            font-size: 10px;
+            text-align: center;
+        }
 
-    thead th {
-        background: #0f766e;
-        color: white;
-        padding: 8px;
-        font-size: 10px;
-        text-align: center;
-    }
+        tbody td {
+            border: 1px solid #e5e7eb;
+            padding: 7px;
+            font-size: 10px;
+            text-align: center;
+        }
 
-    tbody td {
-        border: 1px solid #e5e7eb;
-        padding: 7px;
-        font-size: 10px;
-        text-align: center;
-    }
+        tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
 
-    tbody tr:nth-child(even) {
-        background: #f9fafb;
-    }
+        .empty {
+            padding: 18px;
+            text-align: center;
+            color: #6b7280;
+        }
 
-    .empty {
-        padding: 18px;
-        text-align: center;
-        color: #6b7280;
-    }
+        .total {
+            margin-top: 16px;
+            text-align: right;
+            font-size: 12px;
+            font-weight: bold;
+        }
 
-   
-    .total {
-        margin-top: 16px;
-        text-align: right;
-        font-size: 12px;
-        font-weight: bold;
-    }
+        .footer {
+            position: fixed;
+            bottom: 18px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 9px;
+            color: #9ca3af;
+        }
 
-   
-    .footer {
-        position: fixed;
-        bottom: 18px;
-        left: 0;
-        right: 0;
-        text-align: center;
-        font-size: 9px;
-        color: #9ca3af;
-    }
-</style>
+    </style>
 </head>
 
 <body>
-
-<div class="page">
-
- 
-    <div class="header">
-        <h1>Booking Report</h1>
-        <p>Pasundan Padel</p>
-    </div>
-
-   
-    <div class="info">
-        <strong>Print Date:</strong> December 29, 2025 · 09:49
-    </div>
-
-    
-    <table class="summary">
-        <tr>
-            <td>
-                <span>Total Bookings</span>
-                <h3>12</h3>
-            </td>
-            <td>
-                <span>Pending</span>
-                <h3>3</h3>
-            </td>
-            <td>
-                <span>Confirmed</span>
-                <h3>5</h3>
-            </td>
-            <td>
-                <span>Completed</span>
-                <h3>3</h3>
-            </td>
-            <td>
-                <span>Cancelled</span>
-                <h3>1</h3>
-            </td>
-        </tr>
-    </table>
-
-    
-    <table>
-        <thead>
+    <div class="page">
+        <div class="header">
+            <h1>Booking Report</h1>
+            <p>Pasundan Padel</p>
+        </div>
+        <div class="info"> <strong>Print Date:</strong> {{ $exported_at }} </div>
+        <table class="summary">
             <tr>
-                <th>ID</th>
-                <th>User</th>
-                <th>Court</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Duration</th>
-                <th>Total Price</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>001</td>
-                <td>Kim Mingyu</td>
-                <td>Court A</td>
-                <td>20-12-2025</td>
-                <td>18:00 - 20:00</td>
-                <td>2 hours</td>
-                <td>Rp 300,000</td>
-                <td>Confirmed</td>
-            </tr>
-            <tr>
-                <td>002</td>
-                <td>Lando Norris</td>
-                <td>Court B</td>
-                <td>21-12-2025</td>
-                <td>19:00 - 21:00</td>
-                <td>2 hours</td>
-                <td>Rp 300,000</td>
-                <td>Completed</td>
-            </tr>
-            <tr>
-                <td colspan="8" class="empty">
-                    No additional booking data available
+                <td> <span>Total Bookings</span>
+                    <h3>{{ $stats['total'] }}</h3>
+                </td>
+                <td> <span>Pending</span>
+                    <h3>{{ $stats['pending'] }}</h3>
+                </td>
+                <td> <span>Confirmed</span>
+                    <h3>{{ $stats['confirmed'] }}</h3>
+                </td>
+                <td> <span>Completed</span>
+                    <h3>{{ $stats['completed'] }}</h3>
+                </td>
+                <td> <span>Cancelled</span>
+                    <h3>{{ $stats['cancelled'] }}</h3>
                 </td>
             </tr>
-        </tbody>
-    </table>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Court</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Duration</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                 @forelse($bookings as $booking)
+                <tr>
+                    <td>{{ str_pad($booking->id, 3, '0', STR_PAD_LEFT) }}</td>
+                    <td>{{ $booking->user?->name }}</td>
+                    <td>{{ $booking->lapangan->nama_lapangan }}</td>
+                    <td>{{ \Carbon\Carbon::parse($booking->jadwal->date)->format('d-m-Y') }}</td>
+                    <td>{{ $booking->jadwal->start_time }} - {{ $booking->jadwal->end_time }}</td>
+                    <td>{{ $booking->duration }} {{ $booking->duration > 1 ? 'hours' : 'hour' }}</td>
+                    <td>Rp {{ number_format($booking->total_price, 0, ',', '.') }}</td>
+                    <td>{{ ucfirst($booking->status) }}</td>
 
-   
-    <div class="total">
-        Total Revenue: Rp 600,000
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="8" class="empty"> No additional booking data available </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+        <div class="total"> Total Revenue: Rp {{ number_format($bookings->where('payment_status', 'paid')->sum('total_price'), 0, ',', '.') }}</div>
     </div>
-
-</div>
-
-
-<div class="footer">
-    This report was automatically generated by the Pasundan Padel Management System<br>
-    Printed on December 29, 2025
-</div>
-
+    <div class="footer"> This report was automatically generated by the Pasundan Padel Management System<br> Printed on
+        {{ now()->format('F d, Y') }}</div>
 </body>
+
 </html>
