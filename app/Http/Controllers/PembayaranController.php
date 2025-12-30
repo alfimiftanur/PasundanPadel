@@ -96,7 +96,7 @@ class PembayaranController extends Controller
         }
     }
 
-   
+
     public function callback(Request $request)
     {
         try {
@@ -123,8 +123,18 @@ class PembayaranController extends Controller
                     $pemesanan->paid_at = now();
                     $pemesanan->payment_method = $notification->payment_type;
                     
-                    if ($pemesanan->jadwal) {
-                        $pemesanan->jadwal->update(['status' => 'terboking']);
+                    $startDate = $pemesanan->jadwal->date;
+                    $startTime = $pemesanan->jadwal->start_time;
+                    $duration = $pemesanan->duration;
+                    $courtId = $pemesanan->court_id;
+
+                    for ($i = 0; $i < $duration; $i++) {
+                        $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
+                        
+                        \App\Models\Jadwal::where('court_id', $courtId)
+                            ->where('date', $startDate)
+                            ->where('start_time', $jadwalStartTime)
+                            ->update(['status' => 'terboking']);
                     }
                 }
             } else if ($transactionStatus == 'settlement') {
@@ -133,8 +143,18 @@ class PembayaranController extends Controller
                 $pemesanan->paid_at = now();
                 $pemesanan->payment_method = $notification->payment_type;
                 
-                if ($pemesanan->jadwal) {
-                    $pemesanan->jadwal->update(['status' => 'terboking']);
+                $startDate = $pemesanan->jadwal->date;
+                $startTime = $pemesanan->jadwal->start_time;
+                $duration = $pemesanan->duration;
+                $courtId = $pemesanan->court_id;
+
+                for ($i = 0; $i < $duration; $i++) {
+                    $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
+                    
+                    \App\Models\Jadwal::where('court_id', $courtId)
+                        ->where('date', $startDate)
+                        ->where('start_time', $jadwalStartTime)
+                        ->update(['status' => 'terboking']);
                 }
             } else if ($transactionStatus == 'pending') {
                 $pemesanan->payment_status = 'pending';
@@ -142,15 +162,36 @@ class PembayaranController extends Controller
                 $pemesanan->payment_status = 'failed';
                 $pemesanan->status = 'cancelled';
                 
-                if ($pemesanan->jadwal) {
-                    $pemesanan->jadwal->update(['status' => 'tersedia']);
+                $startDate = $pemesanan->jadwal->date;
+                $startTime = $pemesanan->jadwal->start_time;
+                $duration = $pemesanan->duration;
+                $courtId = $pemesanan->court_id;
+
+                for ($i = 0; $i < $duration; $i++) {
+                    $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
+                    
+                    \App\Models\Jadwal::where('court_id', $courtId)
+                        ->where('date', $startDate)
+                        ->where('start_time', $jadwalStartTime)
+                        ->update(['status' => 'tersedia']);
                 }
             } else if ($transactionStatus == 'deny' || $transactionStatus == 'expire') {
                 $pemesanan->payment_status = 'failed';
                 $pemesanan->status = 'cancelled';
                 
-                if ($pemesanan->jadwal) {
-                    $pemesanan->jadwal->update(['status' => 'tersedia']);
+                // Update SEMUA jadwal untuk durasi booking
+                $startDate = $pemesanan->jadwal->date;
+                $startTime = $pemesanan->jadwal->start_time;
+                $duration = $pemesanan->duration;
+                $courtId = $pemesanan->court_id;
+
+                for ($i = 0; $i < $duration; $i++) {
+                    $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
+                    
+                    \App\Models\Jadwal::where('court_id', $courtId)
+                        ->where('date', $startDate)
+                        ->where('start_time', $jadwalStartTime)
+                        ->update(['status' => 'tersedia']);
                 }
             }
 
@@ -164,7 +205,7 @@ class PembayaranController extends Controller
         }
     }
 
-    
+
     public function sukses($pemesananId)
     {
         $pemesanan = Pemesanan::with(['lapangan', 'jadwal'])->findOrFail($pemesananId);
@@ -179,7 +220,7 @@ class PembayaranController extends Controller
         return view('payment.pending', compact('pemesanan'));
     }
 
-   
+
     public function gagal($pemesananId)
     {
         $pemesanan = Pemesanan::with(['lapangan', 'jadwal'])->findOrFail($pemesananId);
@@ -187,7 +228,7 @@ class PembayaranController extends Controller
         return view('payment.failed', compact('pemesanan'));
     }
 
-    
+
     public function cekStatus($pemesananId)
     {
         $pemesanan = Pemesanan::with('jadwal')->findOrFail($pemesananId);
@@ -212,8 +253,18 @@ class PembayaranController extends Controller
                         $pemesanan->payment_method = $status->payment_type;
                         $pemesanan->transaction_id = $status->transaction_id;
                         
-                        if ($pemesanan->jadwal) {
-                            $pemesanan->jadwal->update(['status' => 'terboking']);
+                        $startDate = $pemesanan->jadwal->date;
+                        $startTime = $pemesanan->jadwal->start_time;
+                        $duration = $pemesanan->duration;
+                        $courtId = $pemesanan->court_id;
+
+                        for ($i = 0; $i < $duration; $i++) {
+                            $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
+                            
+                            \App\Models\Jadwal::where('court_id', $courtId)
+                                ->where('date', $startDate)
+                                ->where('start_time', $jadwalStartTime)
+                                ->update(['status' => 'terboking']);
                         }
                     }
                 } else if ($transactionStatus == 'settlement') {
@@ -223,8 +274,18 @@ class PembayaranController extends Controller
                     $pemesanan->payment_method = $status->payment_type;
                     $pemesanan->transaction_id = $status->transaction_id;
                     
-                    if ($pemesanan->jadwal) {
-                        $pemesanan->jadwal->update(['status' => 'terboking']);
+                    $startDate = $pemesanan->jadwal->date;
+                    $startTime = $pemesanan->jadwal->start_time;
+                    $duration = $pemesanan->duration;
+                    $courtId = $pemesanan->court_id;
+
+                    for ($i = 0; $i < $duration; $i++) {
+                        $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
+                        
+                        \App\Models\Jadwal::where('court_id', $courtId)
+                            ->where('date', $startDate)
+                            ->where('start_time', $jadwalStartTime)
+                            ->update(['status' => 'terboking']);
                     }
                 } else if ($transactionStatus == 'pending') {
                     $pemesanan->payment_status = 'pending';
@@ -232,15 +293,34 @@ class PembayaranController extends Controller
                     $pemesanan->payment_status = 'failed';
                     $pemesanan->status = 'cancelled';
                     
-                    if ($pemesanan->jadwal) {
-                        $pemesanan->jadwal->update(['status' => 'tersedia']);
+                    $startDate = $pemesanan->jadwal->date;
+                    $startTime = $pemesanan->jadwal->start_time;
+                    $duration = $pemesanan->duration;
+                    $courtId = $pemesanan->court_id;
+
+                    for ($i = 0; $i < $duration; $i++) {
+                        $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
+                        
+                        \App\Models\Jadwal::where('court_id', $courtId)
+                            ->where('date', $startDate)
+                            ->where('start_time', $jadwalStartTime)
+                            ->update(['status' => 'tersedia']);
                     }
                 } else if (in_array($transactionStatus, ['deny', 'expire'])) {
                     $pemesanan->payment_status = 'failed';
                     $pemesanan->status = 'cancelled';
-                    
-                    if ($pemesanan->jadwal) {
-                        $pemesanan->jadwal->update(['status' => 'tersedia']);
+                    $startDate = $pemesanan->jadwal->date;
+                    $startTime = $pemesanan->jadwal->start_time;
+                    $duration = $pemesanan->duration;
+                    $courtId = $pemesanan->court_id;
+
+                    for ($i = 0; $i < $duration; $i++) {
+                        $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
+                        
+                        \App\Models\Jadwal::where('court_id', $courtId)
+                            ->where('date', $startDate)
+                            ->where('start_time', $jadwalStartTime)
+                            ->update(['status' => 'tersedia']);
                     }
                 }
 

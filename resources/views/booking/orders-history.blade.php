@@ -81,7 +81,7 @@
                                 {{ str_pad($pemesanan->id, 3, '0', STR_PAD_LEFT) }}
                             </td>
                             <td class="px-6 py-4">{{ \Carbon\Carbon::parse($pemesanan->jadwal->date)->format('Y-m-d') }}</td>
-                            <td class="px-6 py-4">{{ $pemesanan->jadwal->start_time }} - {{ $pemesanan->jadwal->end_time }}</td>
+                            <td class="px-6 py-4">{{ $pemesanan->jadwal->start_time }} - {{ \Carbon\Carbon::parse($pemesanan->jadwal->start_time)->addHours($pemesanan->duration)->format('H:i') }}</td>
                             <td class="px-6 py-4">{{ $pemesanan->lapangan->nama_lapangan }}</td>
                             <td class="px-6 py-4 font-medium
                                 @if($pemesanan->status === 'cancelled') text-red-600
@@ -122,7 +122,6 @@
                                             </svg>
                                         </button>
 
-                                        <!-- Tombol Cancel -->
                                         <form action="{{ route('booking.cancel', $pemesanan->id) }}" method="POST" id="cancel-form-{{ $pemesanan->id }}" class="inline-block">
                                             @csrf
                                             <button type="button" 
