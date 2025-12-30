@@ -4,7 +4,6 @@
     <section class="bg-[#dfe6db]">
         <div id="detail-booking" class="max-w-7xl mx-auto px-6 py-8">
 
-            <!-- back -->
             <a href="{{ route('pemesanan.index') }}" class="text-slate-600 hover:underline flex items-center gap-2 mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-5">
@@ -12,12 +11,16 @@
                 </svg>
             </a>
 
+            @if(session('success'))
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded mb-6">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                <!-- main class -->
                 <div class="lg:col-span-2 bg-white rounded-2xl shadow overflow-hidden">
 
-                    <!-- header -->
                     <div class="bg-[#6bbb97d7] text-white p-6 flex justify-between items-center">
                         <div>
                             <h1 class="text-xl font-bold">
@@ -38,10 +41,8 @@
                         </span>
                     </div>
 
-                    <!-- content -->
                     <div class="p-6 space-y-2">
 
-                        <!-- customer -->
                         <div>
                             <h2 class="font-semibold text-lg flex items-center gap-2 mb-3">
                                 Customer Information
@@ -50,7 +51,11 @@
                             <div class="bg-slate-50 rounded-xl p-4 space-y-3">
                                 <div>
                                     <p class="text-sm text-slate-500">Name</p>
+<<<<<<< Updated upstream
                                     <p class="font-semibold">{{ $pemesanan->customer_name }}</p>
+=======
+                                    <p class="font-semibold">{{ $pemesanan->user?->name }}</p>
+>>>>>>> Stashed changes
                                 </div>
                                 <div>
                                     <p class="text-sm text-slate-500">Email</p>
@@ -63,10 +68,8 @@
                             </div>
                         </div>
 
-                        <!-- lapang n jadwal -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                            <!-- lapangan -->
                             <div>
                                 <h2 class="font-semibold text-lg flex items-center gap-2 mb-3">
                                     Court
@@ -88,7 +91,6 @@
                                 </div>
                             </div>
 
-                            <!-- jadwal -->
                             <div>
                                 <h2 class="font-semibold text-lg flex items-center gap-2 mb-3">
                                     Schedule
@@ -120,7 +122,6 @@
                             </div>
                         </div>
 
-                        <!-- payment -->
                         <div>
                             <h2 class="font-semibold text-lg flex items-center gap-2 mb-3">
                                 Pembayaran
@@ -151,19 +152,45 @@
                                     <span>Payment Status</span>
                                     <span
                                         class="px-3 py-1 text-xs rounded-full 
-                                    @if ($pemesanan->payment_status === 'paid') bg-green-100 text-green-700
+                                    @if ($pemesanan->status === 'cancelled') bg-red-100 text-red-700
+                                    @elseif($pemesanan->payment_status === 'paid') bg-green-100 text-green-700
                                     @elseif($pemesanan->payment_status === 'pending') bg-yellow-100 text-yellow-700
-                                    @else bg-red-100 text-red-700 @endif">
-                                        {{ ucfirst($pemesanan->payment_status) }}
+                                    @else bg-gray-100 text-gray-700 @endif">
+                                        @if ($pemesanan->status === 'cancelled')
+                                            Cancelled
+                                        @else
+                                            {{ ucfirst($pemesanan->payment_status) }}
+                                        @endif
                                     </span>
                                 </div>
                             </div>
                         </div>
 
+                        @if($pemesanan->status !== 'cancelled')
+                        <div class="pt-4">
+                            <form action="{{ route('booking.cancel', $pemesanan->id) }}" method="POST" id="cancel-form-admin" class="inline-block">
+                                @csrf
+                                <button type="button" 
+                                    onclick="confirmCancelAdmin()"
+                                    class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                    </svg>
+                                    Cancel Booking
+                                </button>
+                            </form>
+                        </div>
+                        @else
+                        <div class="pt-4">
+                            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                                <p class="text-red-700 font-semibold">This booking has been cancelled</p>
+                            </div>
+                        </div>
+                        @endif
+
                     </div>
                 </div>
 
-                <!-- proof -->
                 <div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-6 h-fit">
                     <h3 class="font-bold text-yellow-800 mb-2">
                         No Evidence Yet
@@ -175,4 +202,16 @@
 
             </div>
         </div>
+<<<<<<< Updated upstream
+=======
+    </section>
+
+    <script>
+        function confirmCancelAdmin() {
+            if (confirm('Are you sure you want to cancel this booking? The status will be changed to "Cancelled" and the schedule will be available again.')) {
+                document.getElementById('cancel-form-admin').submit();
+            }
+        }
+    </script>
+>>>>>>> Stashed changes
 </x-layout>

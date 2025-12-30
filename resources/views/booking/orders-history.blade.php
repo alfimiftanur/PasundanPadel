@@ -84,20 +84,19 @@
                             <td class="px-6 py-4">{{ $pemesanan->jadwal->start_time }} - {{ $pemesanan->jadwal->end_time }}</td>
                             <td class="px-6 py-4">{{ $pemesanan->lapangan->nama_lapangan }}</td>
                             <td class="px-6 py-4 font-medium
-                                @if($pemesanan->payment_status === 'paid') text-green-600
-                                @elseif($pemesanan->payment_status === 'pending') text-yellow-600
-                                @elseif($pemesanan->payment_status === 'unpaid') text-yellow-600
+                                @if($pemesanan->status === 'cancelled') text-red-600
+                                @elseif($pemesanan->payment_status === 'paid') text-green-600
+                                @elseif($pemesanan->payment_status === 'pending' || $pemesanan->payment_status === 'unpaid') text-yellow-600
                                 @elseif($pemesanan->payment_status === 'failed') text-red-600
-                                @elseif($pemesanan->status === 'cancelled') text-red-600
                                 @endif">
-                                @if($pemesanan->payment_status === 'paid')
+                                @if($pemesanan->status === 'cancelled')
+                                    Cancelled
+                                @elseif($pemesanan->payment_status === 'paid')
                                     PAID
                                 @elseif($pemesanan->payment_status === 'pending' || $pemesanan->payment_status === 'unpaid')
                                     Pending
                                 @elseif($pemesanan->payment_status === 'failed')
                                     Failed
-                                @elseif($pemesanan->status === 'cancelled')
-                                    Cancelled
                                 @else
                                     {{ ucfirst($pemesanan->status) }}
                                 @endif
@@ -105,7 +104,7 @@
                             <td class="px-6 py-4">Rp{{ number_format($pemesanan->total_price, 0, ',', '.') }}</td>
                             <td class="px-6 py-4 text-center">
                                 <div class="flex gap-2 justify-center">
-                                    @if($pemesanan->payment_status === 'pending' || $pemesanan->payment_status === 'unpaid')
+                                    @if(($pemesanan->payment_status === 'pending' || $pemesanan->payment_status === 'unpaid') && $pemesanan->status !== 'cancelled')
                                         <a href="{{ route('pembayaran.checkout', $pemesanan->id) }}" 
                                             class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-xs font-semibold transition duration-200"
                                             title="Lanjutkan Pembayaran">
@@ -122,9 +121,24 @@
                                                     d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                                             </svg>
                                         </button>
+
+                                        <!-- Tombol Cancel -->
+                                        <form action="{{ route('booking.cancel', $pemesanan->id) }}" method="POST" id="cancel-form-{{ $pemesanan->id }}" class="inline-block">
+                                            @csrf
+                                            <button type="button" 
+                                                onclick="confirmCancel({{ $pemesanan->id }})"
+                                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-xs font-semibold transition duration-200 flex items-center gap-1"
+                                                title="Cancel Booking">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                                </svg>
+                                                Cancel
+                                            </button>
+                                        </form>
+
                                     @endif
                                     
-                                    @if($pemesanan->payment_status === 'paid')
+                                    @if($pemesanan->payment_status === 'paid' && $pemesanan->status !== 'cancelled')
                                         <div x-data="{ open: false }" class="relative inline-block">
                                             <button @click="open = !open"
                                                 class="p-2 border rounded hover:bg-gray-100 focus:outline-none">
@@ -199,6 +213,12 @@
                     console.error('Error:', error);
                     alert('Gagal memeriksa status: ' + error.message);
                 });
+        }
+
+        function confirmCancel(pemesananId) {
+            if (confirm('Are you sure you want to cancel this booking? This action cannot be undone.')) {
+                document.getElementById('cancel-form-' + pemesananId).submit();
+            }
         }
     </script>
 </x-layout>
