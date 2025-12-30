@@ -152,7 +152,7 @@
                                     {{ \Carbon\Carbon::parse($pemesanan->jadwal->date)->format('d M Y') }}
                                 </td>
                                 <td class="px-4 py-3">
-                                    {{ $pemesanan->jadwal->start_time }} - {{ $pemesanan->jadwal->end_time }}
+                                    {{ $pemesanan->jadwal->start_time }} – {{ \Carbon\Carbon::parse($pemesanan->jadwal->start_time)->addHours($pemesanan->duration)->format('H:i') }}
                                 </td>
                                 <td class="px-4 py-3">Rp {{ number_format($pemesanan->total_price, 0, ',', '.') }}</td>
                                 <td class="px-4 py-3">

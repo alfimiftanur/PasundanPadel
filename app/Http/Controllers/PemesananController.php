@@ -189,36 +189,70 @@ class PemesananController extends Controller
 
     
     public function update(Request $request, Pemesanan $pemesanan)
-    {
-        $validated = $request->validate([
-            'status' => 'required|in:pending,confirmed,cancelled,completed',
-            'payment_status' => 'required|in:unpaid,pending,paid,failed',
-        ]);
+{
+    $validated = $request->validate([
+        'status' => 'required|in:pending,confirmed,cancelled,completed',
+        'payment_status' => 'required|in:unpaid,pending,paid,failed',
+    ]);
 
-        $pemesanan->update($validated);
+    $pemesanan->update($validated);
 
-        if ($validated['status'] === 'confirmed' && $validated['payment_status'] === 'paid') {
-            $pemesanan->jadwal->update(['status' => 'terboking']);
-        } elseif ($validated['status'] === 'cancelled') {
-            $pemesanan->jadwal->update(['status' => 'tersedia']);
+    if ($validated['status'] === 'confirmed' && $validated['payment_status'] === 'paid') {
+        $startDate = $pemesanan->jadwal->date;
+        $startTime = $pemesanan->jadwal->start_time;
+        $duration = $pemesanan->duration;
+        $courtId = $pemesanan->court_id;
+
+        for ($i = 0; $i < $duration; $i++) {
+            $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
+            
+            Jadwal::where('court_id', $courtId)
+                ->where('date', $startDate)
+                ->where('start_time', $jadwalStartTime)
+                ->update(['status' => 'terboking']);
         }
+    } elseif ($validated['status'] === 'cancelled') {
+        $startDate = $pemesanan->jadwal->date;
+        $startTime = $pemesanan->jadwal->start_time;
+        $duration = $pemesanan->duration;
+        $courtId = $pemesanan->court_id;
 
-        return redirect()->route('pemesanan.index')
-            ->with('success', 'Order status updated successfully!');
+        for ($i = 0; $i < $duration; $i++) {
+            $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
+            
+            Jadwal::where('court_id', $courtId)
+                ->where('date', $startDate)
+                ->where('start_time', $jadwalStartTime)
+                ->update(['status' => 'tersedia']);
+        }
     }
+
+    return redirect()->route('pemesanan.index')
+        ->with('success', 'Order status updated successfully!');
+}
+
    
     public function destroy(Pemesanan $pemesanan)
-    {
-        $jadwal = $pemesanan->jadwal;
-        if ($jadwal) {
-            $jadwal->update(['status' => 'tersedia']);
-        }
+{
+    $startDate = $pemesanan->jadwal->date;
+    $startTime = $pemesanan->jadwal->start_time;
+    $duration = $pemesanan->duration;
+    $courtId = $pemesanan->court_id;
 
-        $pemesanan->delete();
+    for ($i = 0; $i < $duration; $i++) {
+        $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
         
-        return redirect()->route('pemesanan.index')
-            ->with('success', 'Order successfully deleted!');
+        Jadwal::where('court_id', $courtId)
+            ->where('date', $startDate)
+            ->where('start_time', $jadwalStartTime)
+            ->update(['status' => 'tersedia']);
     }
+
+    $pemesanan->delete();
+    
+    return redirect()->route('pemesanan.index')
+        ->with('success', 'Order successfully deleted!');
+}
 
    
     public function ordersHistory()
@@ -241,18 +275,30 @@ class PemesananController extends Controller
     }
 
     public function cancel($id)
-    {
-        $pemesanan = Pemesanan::findOrFail($id);
+{
+    $pemesanan = Pemesanan::findOrFail($id);
+    
+    $pemesanan->update([
+        'status' => 'cancelled'
+    ]);
+    
+    $startDate = $pemesanan->jadwal->date;
+    $startTime = $pemesanan->jadwal->start_time;
+    $duration = $pemesanan->duration;
+    $courtId = $pemesanan->court_id;
+
+    for ($i = 0; $i < $duration; $i++) {
+        $jadwalStartTime = \Carbon\Carbon::parse($startTime)->addHours($i)->format('H:i');
         
-        $pemesanan->update([
-            'status' => 'cancelled'
-        ]);
-        
-        $pemesanan->jadwal->update(['status' => 'tersedia']);
-        
-        return redirect()->back()
-            ->with('success', 'Booking successfully cancelled.');
+        Jadwal::where('court_id', $courtId)
+            ->where('date', $startDate)
+            ->where('start_time', $jadwalStartTime)
+            ->update(['status' => 'tersedia']);
     }
+    
+    return redirect()->back()
+        ->with('success', 'Booking successfully cancelled.');
+}
 
     public function exportPdf(Pemesanan $pemesanan)
     {
