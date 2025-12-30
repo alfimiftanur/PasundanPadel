@@ -18,8 +18,17 @@ class AdminController extends Controller
         $confirmedBookings = Pemesanan::where('status', 'confirmed')->count();
         $cancelledBookings = Pemesanan::where('status', 'cancelled')->count();
         $revenue = 'Rp 0';
-        $todayRevenue = 0;
-        $monthRevenue = 0;
+        $todayRevenue = Pemesanan::whereDate('created_at', today())
+            ->where('payment_status', 'paid')
+            ->where('status', '!=', 'cancelled')
+            ->sum('total_price');
+    
+        $monthRevenue = Pemesanan::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->where('payment_status', 'paid')
+            ->where('status', '!=', 'cancelled')
+            ->sum('total_price');
+
         $recentBookings = Pemesanan::with(['lapangan', 'jadwal'])
             ->latest()
             ->take(5)

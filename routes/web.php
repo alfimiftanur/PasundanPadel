@@ -44,6 +44,10 @@ Route::get('/orders-history', [PemesananController::class, 'ordersHistory'])
     ->middleware('auth')
     ->name('booking.orders-history');
 
+Route::post('/booking/{id}/cancel', [PemesananController::class, 'cancel'])
+    ->middleware('auth')
+    ->name('booking.cancel');
+
 Route::get('/booking/{pemesanan}/pdf', [App\Http\Controllers\PemesananController::class, 'exportPdf'])
     ->middleware('auth')
     ->name('booking.pdf');
