@@ -118,10 +118,10 @@
 
             <!-- mobile menu -->
             <div id="mobile-menu" class="hidden md:hidden bg-teal-600 px-2 pt-2 pb-3 space-y-1">
-                <a href="/#hero" class="block px-3 py-2 text-white hover:text-teal-200">Home</a>
-                <a href="/court" class="block px-3 py-2 text-white hover:text-teal-200"> Court</a>
-                <a href="/#us" class="block px-3 py-2 text-white hover:text-teal-200">Experience</a>
-                <a href="/schedule" class="block px-3 py-2 text-white hover:text-teal-200">Schedule</a>
+                <a href="/#hero" class="block px-3 py-2 text-white hover:text-teal-200 hover:pl-5">Home</a>
+                <a href="/court" class="block px-3 py-2 text-white hover:text-teal-200 hover:pl-5"> Court</a>
+                <a href="/#us" class="block px-3 py-2 text-white hover:text-teal-200 hover:pl-5">Experience</a>
+                <a href="/schedule" class="block px-3 py-2 text-white hover:text-teal-200 hover:pl-5">Schedule</a>
 
 
                 @guest
@@ -136,14 +136,20 @@
                 @auth
                     @if (auth()->user()->role === 'admin')
                         <a href="{{ route('admin.dashboard') }}"
-                            class="block px-3 py-2 text-white bg-amber-500 rounded font-semibold">
+                            class="block px-3 py-2 text-white hover:text-teal-200 hover:pl-5">
                             Dashboard
+                        </a>
+                    @else
+                        <a href="{{ route('booking.orders-history') }}"
+                            class="block px-3 py-2 text-white hover:text-teal-200 hover:pl-5">
+                            My Orders
                         </a>
                     @endif
 
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button class="block w-full text-left px-3 py-2 text-white hover:bg-red-700">
+                        <button
+                            class="block w-full text-left px-3 py-2 text-white rounded-lg hover:bg-red-600 hover:pl-5">
                             Logout
                         </button>
                     </form>
@@ -153,7 +159,7 @@
     </nav>
 
     <!-- content -->
-    <main class="flex-1">
+    <main class="flex-1 bg-[#dfe6db]">
         {{ $slot }}
     </main>
 
