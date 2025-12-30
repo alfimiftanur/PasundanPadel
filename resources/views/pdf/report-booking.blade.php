@@ -164,7 +164,7 @@
                     <td>{{ $booking->user?->name }}</td>
                     <td>{{ $booking->lapangan->nama_lapangan }}</td>
                     <td>{{ \Carbon\Carbon::parse($booking->jadwal->date)->format('d-m-Y') }}</td>
-                    <td>{{ $booking->jadwal->start_time }} - {{ $booking->jadwal->end_time }}</td>
+                    <td>{{ $booking->jadwal->start_time }} - {{ \Carbon\Carbon::parse($booking->jadwal->start_time)->addHours($booking->duration)->format('H:i') }}</td>
                     <td>{{ $booking->duration }} {{ $booking->duration > 1 ? 'hours' : 'hour' }}</td>
                     <td>Rp {{ number_format($booking->total_price, 0, ',', '.') }}</td>
                     <td>{{ ucfirst($booking->status) }}</td>

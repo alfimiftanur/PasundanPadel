@@ -216,7 +216,7 @@
                     </div>
                     <div class="row">
                         <div class="label">Time</div>
-                        <div class="value">{{ $pemesanan->jadwal->start_time }} – {{ $pemesanan->jadwal->end_time }} WIB</div>
+                        <div class="value">{{ $pemesanan->jadwal->start_time }} – {{ \Carbon\Carbon::parse($pemesanan->jadwal->start_time)->addHours($pemesanan->duration)->format('H:i') }} WIB</div>
                     </div>
                     <div class="row">
                         <div class="label">Duration</div>
