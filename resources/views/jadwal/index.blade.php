@@ -1,12 +1,10 @@
 <x-layout>
     <div class="container mx-auto px-4 py-8">
-        <!-- Page Header -->
         <div class="mb-8">
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Kalender Jadwal</h1>
             <p class="text-gray-600">Lihat ketersediaan lapangan secara real-time</p>
         </div>
 
-        <!-- Alert Success -->
         @if(session('success'))
             <div class="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded mb-6 shadow-md flex items-center">
                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -16,7 +14,6 @@
             </div>
         @endif
 
-        <!-- Alert Error -->
         @if($errors->any())
             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded mb-6 shadow-md">
                 <div class="flex items-center mb-2">
@@ -33,11 +30,9 @@
             </div>
         @endif
 
-        <!-- Filter Section -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <form action="{{ route('jadwal.index') }}" method="GET">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Pilih Lapangan -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Lapangan</label>
                         <select name="court_id" 
@@ -51,7 +46,6 @@
                         </select>
                     </div>
 
-                    <!-- Pilih Tanggal -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Pilih Tanggal</label>
                         <input type="date" 
@@ -61,7 +55,6 @@
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition">
                     </div>
 
-                    <!-- Button Cari -->
                     <div class="flex items-end">
                         <button type="submit" 
                                 class="w-full px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200 font-semibold shadow-md">
@@ -72,7 +65,6 @@
             </form>
         </div>
 
-        <!-- Legend -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h3 class="font-semibold text-gray-800 mb-3">Keterangan:</h3>
             <div class="flex flex-wrap gap-6">
@@ -81,13 +73,16 @@
                     <span class="text-sm text-gray-700">Tersedia</span>
                 </div>
                 <div class="flex items-center">
+                    <div class="w-4 h-4 bg-yellow-500 rounded mr-2"></div>
+                    <span class="text-sm text-gray-700">Pending</span>
+                </div>
+                <div class="flex items-center">
                     <div class="w-4 h-4 bg-red-500 rounded mr-2"></div>
                     <span class="text-sm text-gray-700">Terboking</span>
                 </div>
             </div>
         </div>
 
-        <!-- Schedule Table -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full">
@@ -106,15 +101,12 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach($timeSlots as $timeSlot)
                         <tr class="hover:bg-gray-50 transition duration-150">
-                            <!-- Time Slot -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 sticky left-0 bg-white border-r border-gray-200">
                                 {{ $timeSlot }} - {{ date('H:i', strtotime($timeSlot . ' +1 hour')) }}
                             </td>
 
-                            <!-- Court Cells -->
                             @foreach($displayedLapangans as $lapangan)
                                 @php
-                                    // Cek apakah ada jadwal untuk time slot ini
                                     $jadwalForSlot = null;
                                     $status = null;
                                     
@@ -130,14 +122,17 @@
                                         }
                                     }
                                     
-                                    // Warna berdasarkan status
                                     if ($status === 'terboking') {
                                         $bgColor = 'bg-red-100';
                                         $textColor = 'text-red-800';
                                         $statusText = 'Terboking';
                                         $hoverBg = 'hover:bg-red-200';
+                                    } elseif ($status === 'pending') {
+                                        $bgColor = 'bg-yellow-100';
+                                        $textColor = 'text-yellow-800';
+                                        $statusText = 'Pending';
+                                        $hoverBg = 'hover:bg-yellow-200';
                                     } else {
-                                        // Default: Tersedia (baik ada jadwal atau slot kosong)
                                         $bgColor = 'bg-green-100';
                                         $textColor = 'text-green-800';
                                         $statusText = 'Tersedia';
@@ -147,13 +142,11 @@
                                 
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($jadwalForSlot)
-                                        <!-- Ada jadwal: Klik untuk edit -->
                                         <a href="{{ route('jadwal.edit') }}?court_id={{ $lapangan->id }}&date={{ $selectedDate }}&start_time={{ $timeSlot }}&jadwal_id={{ $jadwalForSlot->id }}" 
                                            class="block w-full px-4 py-2 {{ $bgColor }} {{ $textColor }} rounded-lg text-sm font-semibold text-center {{ $hoverBg }} transition duration-200 cursor-pointer">
                                             {{ $statusText }}
                                         </a>
                                     @else
-                                        <!-- Slot kosong: Klik untuk create (DEFAULT TERSEDIA) -->
                                         <a href="{{ route('jadwal.edit') }}?court_id={{ $lapangan->id }}&date={{ $selectedDate }}&start_time={{ $timeSlot }}" 
                                            class="block w-full px-4 py-2 {{ $bgColor }} {{ $textColor }} rounded-lg text-sm font-semibold text-center {{ $hoverBg }} transition duration-200">
                                             {{ $statusText }}
