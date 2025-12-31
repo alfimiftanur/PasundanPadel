@@ -175,7 +175,11 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-3">
-                                    @if ($pemesanan->payment_status === 'paid')
+                                    @if($pemesanan->status === 'cancelled')
+                                        <span class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-700">
+                                            Cancelled
+                                        </span>
+                                    @elseif ($pemesanan->payment_status === 'paid')
                                         <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-700">
                                             Paid
                                         </span>
